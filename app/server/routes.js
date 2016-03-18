@@ -16,7 +16,7 @@ module.exports = function(app) {
 				if (o != null){
 				    req.session.user = o;
 				    //res.redirect('/home');
-				    res.redirect('/gamehub');
+				    res.redirect('/battleship');
 				} else {
 				    //res.redirect('/gamehub');
 				    res.render('login', { title: 'Hello - Please Login To Your Account' });
@@ -44,18 +44,22 @@ module.exports = function(app) {
 	
 // logged-in user homepage //
 
-	app.get('/gamehub', function(req, res) {
-		console.log("went to game hub");
-		res.sendFile('html/gamehub.html', {
-			root: 'app/public/'
-		});	
+	app.get('/battleship', function(req, res) {
+		if (req.session.user == null){
+			res.redirect('/');
+		} else {
+			console.log("went to battleship game hub");
+			res.sendFile('html/battleship.html', {
+				root: 'app/public/'
+			});
+		}	
 	});
 	
 	app.get('/home', function(req, res) {
 		if (req.session.user == null){
 	// if user is not logged-in redirect back to login page //
 			res.redirect('/');
-		}	else{
+		} else{
 			res.render('home', {
 				title : 'Control Panel',
 				countries : CT,
