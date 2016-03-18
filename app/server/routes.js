@@ -15,9 +15,11 @@ module.exports = function(app) {
 			AM.autoLogin(req.cookies.user, req.cookies.pass, function(o){
 				if (o != null){
 				    req.session.user = o;
-					res.redirect('/home');
-				}	else{
-					res.render('login', { title: 'Hello - Please Login To Your Account' });
+				    //res.redirect('/home');
+				    res.redirect('/gamehub');
+				} else {
+				    //res.redirect('/gamehub');
+				    res.render('login', { title: 'Hello - Please Login To Your Account' });
 				}
 			});
 		}
@@ -26,8 +28,10 @@ module.exports = function(app) {
 	app.post('/', function(req, res){
 		AM.manualLogin(req.body['user'], req.body['pass'], function(e, o){
 			if (!o){
+				conosle.log("!o");
 				res.status(400).send(e);
 			}	else{
+				console.log("!o else");
 				req.session.user = o;
 				if (req.body['remember-me'] == 'true'){
 					res.cookie('user', o.user, { maxAge: 900000 });
@@ -39,6 +43,13 @@ module.exports = function(app) {
 	});
 	
 // logged-in user homepage //
+
+	app.get('/gamehub', function(req, res) {
+		console.log("went to game hub");
+		res.sendFile('html/gamehub.html', {
+			root: 'app/public/'
+		});	
+	});
 	
 	app.get('/home', function(req, res) {
 		if (req.session.user == null){
