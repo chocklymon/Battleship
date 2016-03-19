@@ -1,6 +1,10 @@
-.DS_Store
-node_modules
+# IDE/Editor Generated Files
+.idea/
+nbproject/
+
+# Configuration
 app/server/modules/email-settings-mine.js
+
 # Logs
 logs
 *.log
@@ -34,3 +38,7 @@ node_modules
 
 # Optional REPL history
 .node_repl_history
+
+# Misc Files
+.DS_Store
+Thumbs.db

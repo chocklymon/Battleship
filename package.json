@@ -1,14 +1,14 @@
 {
-  "name": "node-login",
-  "version": "1.4.1",
-  "description": "A template for quickly building login systems on top of Node.js & MongoDb",
-  "author": "Stephen Braitsch <stephen@braitsch.io>",
+  "name": "battleship-cs360",
+  "version": "0.0.1",
+  "description": "Recreation of the Battleship game for BYU CS 360",
+  "author": "",
   "website": {
-    "url": "http://node-login.braitsch.io"
+    "url": "https://github.com/chocklymon/Battleship"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:braitsch/node-login.git"
+    "url": "git@github.com:chocklymon/Battleship.git"
   },
   "dependencies": {
     "body-parser": "1.14.1",
