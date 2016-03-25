@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Recreation of the Battleship game for BYU CS 360",
   "author": "",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
   "website": {
     "url": "https://github.com/chocklymon/Battleship"
   },
