@@ -1,0 +1,30 @@
+events:
+
+Namespace: ‘/gamehub’
+connection
+ -> Broadcast all games (provide list of games in gamehub)
+game-add
+ -> Broadcast new game - Add game to gamehub
+game-join
+ -> Broadcast game joined - Remove game from user’s gamehub
+chat-message
+ -> Broadcast chat message
+
+Namespace: ‘/battle’
+connection
+ ->
+join
+ -> Join room defined by gameid
+disconnect
+ -> Broadcast to room player offline
+fire-shot
+ -> Broadcast to room shot - store shot
+setup-ready
+ -> Broadcast setup for player ready - Store ship locations
+chat-message
+ -> Broadcast chat message
+leave?
+ -> Same as disconnect
+
+// See
+http://psitsmike.com/2011/10/node-js-and-socket-io-multiroom-chat-tutorial/
