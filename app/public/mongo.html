@@ -1,0 +1,153 @@
+<html>
+
+<head>
+    <title>Comments</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script>
+        angular.module('comment', [])
+            .controller('MainCtrl', [
+  '$scope', '$http',
+  function ($scope, $http) {
+                    //$scope.test = 'Hello world!';
+                    //$scope.comments = [];
+                    /*$scope.getAll = function () {
+                        return $http.get('/comments').success(function (data) {
+                            console.log(data);
+                            angular.copy(data, $scope.comments);
+                        });
+                    };*/
+
+
+                    $scope.addComment = function () {
+                        $scope.addComment = function () {
+                            if ($scope.formContent === '') {
+                                return;
+                            }
+                            console.log("In addComment with " + $scope.formContent);
+                            $scope.create({
+                                title: $scope.formContent,
+                                upvotes: 20,
+                            });
+                            $scope.formContent = '';
+                        };
+                    };
+
+                    $scope.addGames = function () {
+                        $scope.addGames = function () {
+                            if ($scope.gamearea === '') {
+                                return;
+                            }
+                            console.log("In addGames with " + $scope.gamearea);
+                            var something = JSON.parse($scope.gamearea);
+                            //$http.post('/mongo_games', something);
+                            $http.post('/mongo_games', something).success(function (data) {
+                                $scope.test = "Success!";
+                            });
+                            
+                            $scope.gamearea = '';
+                        };
+                    };
+
+                    $scope.addShips = function () {
+                        $scope.addShips = function () {
+                            if ($scope.shiparea === '') {
+                                return;
+                            }
+                            console.log("In addShips with " + $scope.shiparea);
+                            var something = JSON.parse($scope.shiparea);
+                            //$http.post('/mongo_games', something);
+                            $http.post('/mongo_ships', something).success(function (data) {
+                                console.log("Success!");
+                            });
+                        };
+                    };
+      
+                    $scope.addBoards = function () {
+                        $scope.addBoards = function () {
+                            if ($scope.boardarea === '') {
+                                return;
+                            }
+                            console.log("In addBoards with " + $scope.boardarea);
+                            var something = JSON.parse($scope.boardarea);
+                            //$http.post('/mongo_games', something);
+                            $http.post('/mongo_boards', something).success(function (data) {
+                                console.log("Success!");
+                            });
+                        };
+                    };
+
+
+  }
+]);
+    </script>
+
+</head>
+
+<body ng-app="comment" ng-controller="MainCtrl">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="page-header">
+                <h1>Games</h1>
+            </div>
+
+            <textarea ng-model="$parent.gamearea"></textarea>
+            <button ng-click="addGames()">
+                Add Game
+            </button>
+            <div>
+                {{test}}
+            </div>
+            <pre>
+                 {
+                    "player1": "String",
+                    "player1_ships": "String",
+                    "player1_board": "String",
+                    "player2": "String",
+                    "player2_ships": "String",
+                    "player2_board": "String",
+                    "history": ["String"],
+                    "status": "String"
+                }
+            </pre>
+
+            <div class="page-header">
+                <h1>Ships</h1>
+            </div>
+            <textarea ng-model="$parent.shiparea"></textarea>
+            <button ng-click="addShips()">
+                Add Ships
+            </button>
+            <pre>
+                {
+                "game_id": "String", 
+                "player_name": "String", 
+                "battleship_position": "String", 
+                "battleship_location": "String", 
+                "carrier_position": "String", 
+                "carrier_location": "String", 
+                "cruiser_position": "String", 
+                "cruiser_location": "String", 
+                "submarine_position": "String", 
+                "submarine_location": "String", 
+                "destroyer_position": "String", 
+                "destroyer_location": "String" 
+                }
+            </pre>
+
+            <div class="page-header">
+                <h1>Boards</h1>
+            </div>
+            <textarea ng-model="$parent.boardarea" ></textarea>
+            <button ng-click="addBoards()">
+                Add Board
+            </button>
+            <pre>
+                {"game_id": "String", "player_name": "String"}
+            </pre>
+
+        </div>
+    </div>
+</body>
+
+</html>

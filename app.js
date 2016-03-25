@@ -13,6 +13,11 @@ var errorHandler = require('errorhandler');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')(session);
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/mongo_games');
+
+require('./app/server/models/Schemas');
+
 var app = express();
 
 app.set('port', process.env.PORT || 3002);
@@ -33,9 +38,11 @@ app.use(require('stylus').middleware({ src: __dirname + '/app/public' }));
 app.use(express.static(__dirname + '/app/public'));
 
 require('./app/server/routes')(app);
+require('./app/server/mongo')(app);
 
 if (app.get('env') == 'development') app.use(errorHandler());
 
-http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app);
+server.listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
 });
