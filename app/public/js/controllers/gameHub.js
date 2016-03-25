@@ -17,3 +17,8 @@ $(document).ready(function(){
   });
 
 });
+
+var battleship = angular.module('battleship', []);
+battleship.controller('gamehub', ['$scope', function($scope) {
+
+}]);
