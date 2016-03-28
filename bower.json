@@ -1,0 +1,24 @@
+{
+  "name": "battleship-cs360",
+  "description": "Recreation of the Battleship game for BYU CS 360",
+  "main": "app.js",
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/public/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "jquery": "~2.2.2",
+    "angular": "1.4.9",
+    "angular-route": "1.4.9",
+    "jquery-form": "~3.46.0"
+  }
+}

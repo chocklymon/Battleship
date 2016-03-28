@@ -28,7 +28,7 @@ $(document).ready(function(){
 	$('#account-form #sub2').text('Choose your username & password');
 	$('#account-form-btn1').html('Cancel');
 	$('#account-form-btn2').html('Submit');
-	$('#account-form-btn2').addClass('btn-primary');
+	$('#account-form-btn2').removeClass('btn-default').addClass('btn-primary');
 	
 // setup the alert that displays when an account is successfully created //
 
