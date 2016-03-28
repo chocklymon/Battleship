@@ -12,6 +12,7 @@ $(document).ready(function(){
 
   $("#finalCreateGameButton").click(function() {
     console.log("We should actually send information to the server at this point");
+      console.log($("#newGameName").val());
     $(".createGameOverlay").css("display", "none");
     $(".createGameModal").css("display", "none");
   });

@@ -15,6 +15,7 @@ module.exports = function (app) {
 
     //MongoDB schema for Game and Board
     app.get('/mongo_games', function (req, res, next) {
+        console.log(req);
         Game.find(function (err, games) {
             if (err) {
                 console.log(err);
