@@ -33,7 +33,7 @@ $(document).ready(function(){
 	$('#account-form #sub1').text('Here are the current settings for your account.');
 	$('#user-tf').attr('disabled', 'disabled');
 	$('#account-form-btn1').html('Delete');
-	$('#account-form-btn1').addClass('btn-danger');
+	$('#account-form-btn1').removeClass('btn-default').addClass('btn-danger');
 	$('#account-form-btn2').html('Update');
 
 // setup the confirm window that displays when the user chooses to delete their account //
