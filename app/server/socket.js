@@ -6,15 +6,29 @@
  * http://stackoverflow.com/a/10099325
  */
 
-module.exports = function(server) {
+module.exports = function(server, sessionHandler) {
     // Example for making a simple chat application
     var io = require('socket.io')(server);
+
+    // Authorization Handling Code
+    io.use(function(socket, next) {
+        // First load the session from the socket request
+        sessionHandler(socket.request, {}, next);
+    });
+    io.use(function(socket, next) {
+        // Second verify that the user is logged in
+        if (socket.request.session.user == null) {
+            next(new Error('Not authorized'));
+        } else {
+            next();
+        }
+    });
 
     // GameHub
     var gameHubSocket = io.of('/games');
 
     gameHubSocket.on('connection', function(socket) {
-        //console.log('Socket.io Connection Received');
+        console.log('User connected to socket. ID: ', socket.request.session.user._id);
 
         // Send a list of all current games when the user joins
         // TODO
@@ -31,7 +45,7 @@ module.exports = function(server) {
         });
         socket.on('chat-message', function(msg) {
             //console.log('Socket.io Message Received: ' + msg);
-            gameHubSocket.emit('chat-message', msg);
+            gameHubSocket.emit('chat-message', {user: socket.request.session.user.user, msg: msg});
         });
     });
 
