@@ -20,18 +20,19 @@ require('./app/server/models/Schemas');
 
 var app = express();
 
-app.set('port', process.env.PORT || 3002);
-app.set('views', __dirname + '/app/server/views');
-app.set('view engine', 'jade');
-app.use(cookieParser());
-app.use(session({
+var sessionHandler = session({
 	secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4',
 	proxy: true,
 	resave: true,
 	saveUninitialized: true,
 	store: new MongoStore({ host: 'localhost', port: 27017, db: 'node-login'})
-	})
-);
+});
+
+app.set('port', process.env.PORT || 3002);
+app.set('views', __dirname + '/app/server/views');
+app.set('view engine', 'jade');
+app.use(cookieParser());
+app.use(sessionHandler);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require('stylus').middleware({ src: __dirname + '/app/public' }));
@@ -48,4 +49,4 @@ server.listen(app.get('port'), function(){
 });
 
 // Socket.io WebSocket Code
-require('./app/server/socket')(server);
+require('./app/server/socket')(server, sessionHandler);
