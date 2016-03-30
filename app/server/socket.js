@@ -5,6 +5,10 @@
  * http://psitsmike.com/2011/10/node-js-and-socket-io-multiroom-chat-tutorial/
  * http://stackoverflow.com/a/10099325
  */
+var mongoose = require('mongoose');
+var Game = mongoose.model('Game');
+var Ship = mongoose.model('Ship');
+var Board = mongoose.model('Board');
 
 module.exports = function(server, sessionHandler) {
     // Example for making a simple chat application
@@ -34,10 +38,18 @@ module.exports = function(server, sessionHandler) {
         // TODO
         socket.emit('games-list', {});
 
-
-        socket.on('game-add', function(game) {
-            // TODO add a game
-            gameHubSocket.emit('game-add', game);
+        socket.on('game-add', function(name) {
+            // Create and add a new game to the database
+            var newGame = {name: name, player1: socket.request.session.user.user};
+            var games = new Game(newGame);
+            games.save(function (err, games) {
+                if (err) {
+                    console.warn("Error with 'game-add' socket event: ", err);
+                    socket.emit('error', 'Error adding game to database');
+                } else {
+                    gameHubSocket.emit('game-add', newGame);
+                }
+            });
         });
         socket.on('game-join', function(game) {
             // TODO mark a game as joined
