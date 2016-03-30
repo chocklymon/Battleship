@@ -20,22 +20,39 @@ battleship.config(['$routeProvider', '$locationProvider',
 );
 
 battleship.controller('gamehub', ['$scope', function($scope) {
+    var socket = io('/games');
+
+    socket.on('game-add', function(game) {
+        // TODO get the currently logged in user.
+        //if (game.player1 == currentUser) {
+        //    $scope.personalGames.push(game);
+        //} else {
+            $scope.publicGames.push(game);
+        //}
+        $scope.$digest();
+    });
+    socket.on('games-list', function(games) {
+        $scope.publicGames = games;
+    });
+
+    $scope.publicGames = [];
+    $scope.personalGames = [];
+    $scope.openCreateGameDialog = function() {
+        $(".createGameOverlay").css("display", "block");
+        $(".createGameModal").css("display", "block");
+    };
+    $scope.createGame = function() {
+        //console.log("We should actually send information to the server at this point");
+        $(".createGameOverlay").css("display", "none");
+        $(".createGameModal").css("display", "none");
+
+        socket.emit('game-add', $scope.gameName);
+    };
 
     // TODO make this run in angular?
     jQuery(document).ready(function($) {
 
-        $("#createGameButton").click(function() {
-            $(".createGameOverlay").css("display", "block");
-            $(".createGameModal").css("display", "block");
-        });
-
         $("#cancelCreateGameButton").click(function() {
-            $(".createGameOverlay").css("display", "none");
-            $(".createGameModal").css("display", "none");
-        });
-
-        $("#finalCreateGameButton").click(function() {
-            console.log("We should actually send information to the server at this point");
             $(".createGameOverlay").css("display", "none");
             $(".createGameModal").css("display", "none");
         });

@@ -1,15 +1,15 @@
 <div class="gameHubWrap">
     <h2>Welcome to the Battleship Game Hub</h2>
     <div class="gameHubButtons">
-        <button type="submit" id="createGameButton">
+        <button type="button" data-ng-click="openCreateGameDialog()">
             <span>Create Game</span>
         </button>
     </div>
     <div class="gameHubGames publicJoinableGames">
         <h3>Join A Public Game</h3>
-        <div class="gameListing">
+        <div class="gameListing" data-ng-repeat="game in publicGames">
             <button class="joinButton">Join</button>
-            <span class="gameListingTitle">Game Title</span> - <span class="gameListingPlayer1">Player Name</span>
+            <span class="gameListingTitle">{{game.name}}</span> - <span class="gameListingPlayer1">{{game.player1}}</span>
         </div>
     </div>
     <div class="gameHubGames personalJoinableGames">
@@ -23,9 +23,22 @@
 
 <div class="createGameOverlay">
 </div>
-<div class="createGameModal">
-    <h3>Create Game</h3>
-    Name: <input type="text" name="newGameName">
-    <button id="cancelCreateGameButton">Cancel</button>
-    <button type="submit" id="finalCreateGameButton">Create</button>
+<div class="createGameModal modal">
+    <div class="modal-dialog">
+        <form data-ng-submit="createGame()" class="modal-content">
+            <div class="modal-header">
+                <h3>Create Game</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newGameName">Name:</label>
+                    <input type="text" id="newGameName" data-ng-model="gameName">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" id="cancelCreateGameButton">Cancel</button>
+                <button class="btn btn-primary" type="submit">Create</button>
+            </div>
+        </form>
+    </div>
 </div>
