@@ -31,9 +31,9 @@ battleship.controller('gamehub', ['$scope', function($scope) {
         //}
         $scope.$digest();
     });
-    socket.on('games-list', function(games) {
-        $scope.publicGames = games;
-    });
+    //socket.on('games-list', function(games) {
+    //    $scope.publicGames = games;
+    //});
 
     $scope.publicGames = [];
     $scope.personalGames = [];
