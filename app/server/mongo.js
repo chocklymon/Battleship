@@ -224,6 +224,7 @@ module.exports = function (app) {
     });
     
     //Update Board with Hit or Miss
+    //The requst body needs: {id: "objectid for the board", position: "enter the array number ex. 1, 7, 45, 99, etc", status: "hit or miss"}
     app.put('/mongo_updateboard', function (req, res, next) {
         
         console.log(req.body);
