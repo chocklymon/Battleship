@@ -33,6 +33,73 @@
                         };
                     };
 
+                    $scope.createNewGame = function (gamename) {
+                        $scope.createNewGame = function (gamename) {
+                            if (gamename === '') {
+                                return;
+                            }
+                            console.log("In createNewGame with " + gamename);
+                            var newgame = '{"name": "' + gamename + '"}';
+                            //$http.post('/mongo_games', something);
+                            $http.post('/mongo_newgame', newgame).success(function (data) {
+                                $scope.create_game = "Success!";
+                            });
+                        };
+                    };
+
+                    $scope.updateboard = function (id, position, status) {
+                        $scope.updateboard = function () {
+                            console.log("In updateboard with " + id + " " + position + " " + status);
+                            var update = {
+                                id: id,
+                                position: position,
+                                status: status
+                            };
+                            update = JSON.stringify(update);
+                            //$http.post('/mongo_games', something);
+                            $http.put('/mongo_updateboard', update).success(function (data) {
+                                $scope.update_board = "Success!";
+                            });
+                        };
+                    };
+      
+                    
+
+                    $scope.player2 = function (id, name) {
+                        $scope.player2 = function () {
+                            if (name === '' || id === '') {
+                                return;
+                            }
+                            console.log("In updatestatus with " + id + " " + name);
+                            var update = {
+                                "id": id,
+                                "p2_name": name
+                            };
+                            update = JSON.stringify(update);
+                            $http.put('/mongo_player2', update).success(function (data) {
+                                $scope.player2 = "Success!";
+                            });
+                        };
+                    };
+
+                    $scope.updatestatus = function (id, message) {
+                        $scope.updatestatus = function () {
+                            if (message === '' || id === '') {
+                                return;
+                            }
+                            console.log("In updatestatus with " + id + " " + message);
+                            var update = {
+                                "id": id,
+                                "status": message
+                            };
+                            update = JSON.stringify(update);
+                            //$http.post('/mongo_games', something);
+                            $http.put('/mongo_updatestatus', update).success(function (data) {
+                                $scope.update_status = "Success!";
+                            });
+                        };
+                    };
+
                     $scope.addGames = function () {
                         $scope.addGames = function () {
                             if ($scope.gamearea === '') {
@@ -44,7 +111,7 @@
                             $http.post('/mongo_games', something).success(function (data) {
                                 $scope.test = "Success!";
                             });
-                            
+
                             $scope.gamearea = '';
                         };
                     };
@@ -57,12 +124,12 @@
                             console.log("In addShips with " + $scope.shiparea);
                             var something = JSON.parse($scope.shiparea);
                             //$http.post('/mongo_games', something);
-                            $http.post('/mongo_ships', something).success(function (data) {
+                            $http.put('/mongo_updateships', something).success(function (data) {
                                 console.log("Success!");
                             });
                         };
                     };
-      
+
                     $scope.addBoards = function () {
                         $scope.addBoards = function () {
                             if ($scope.boardarea === '') {
@@ -87,6 +154,59 @@
 <body ng-app="comment" ng-controller="MainCtrl">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
+
+            <div class="page-header">
+                <h1>Update Board</h1>
+            </div>
+            <form novalidate class="simple-form">
+                ID:
+                <input type="text" ng-model="board.id" /> Position:
+                <input type="text" ng-model="board.position" /> Status:
+                <input type="text" ng-model="board.status" />
+                <input type="submit" ng-click="updateboard(board.id, board.position, board.status)" value="Create" />
+            </form>
+            <div>
+                {{update_board}}
+            </div>
+
+            <div class="page-header">
+                <h1>Create New Game</h1>
+            </div>
+            <form novalidate class="simple-form">
+                Name:
+                <input type="text" ng-model="user.name" />
+                <input type="submit" ng-click="createNewGame(user.name)" value="Create" />
+            </form>
+            <div>
+                {{create_game}}
+            </div>
+
+            <div class="page-header">
+                <h1>Player2 Joins Game</h1>
+            </div>
+            <form novalidate class="simple-form">
+                ID:
+                <input type="text" ng-model="play.id" /> Name:
+                <input type="text" ng-model="play.name" />
+                <input type="submit" ng-click="player2(play.id, play.name)" value="Create" />
+            </form>
+            <div>
+                {{player2}}
+            </div>
+
+            <div class="page-header">
+                <h1>Update History</h1>
+            </div>
+            <form novalidate class="simple-form">
+                ID:
+                <input type="text" ng-model="user.id" /> Message:
+                <input type="text" ng-model="user.message" />
+                <input type="submit" ng-click="updatehistory(user.id, user.message)" value="Create" />
+            </form>
+            <div>
+                {{update_status}}
+            </div>
+
             <div class="page-header">
                 <h1>Games</h1>
             </div>
@@ -100,15 +220,14 @@
             </div>
             <pre>
                  {
-                    "game_name": "String",
+                    "name": "String",
                     "player1": "String",
                     "player1_ships": "String",
                     "player1_board": "String",
                     "player2": "String",
                     "player2_ships": "String",
                     "player2_board": "String",
-                    "history": ["String"],
-                    "status": "String"
+                    "history": ["String"]
                 }
             </pre>
 
@@ -139,7 +258,7 @@
             <div class="page-header">
                 <h1>Boards</h1>
             </div>
-            <textarea ng-model="$parent.boardarea" ></textarea>
+            <textarea ng-model="$parent.boardarea"></textarea>
             <button ng-click="addBoards()">
                 Add Board
             </button>

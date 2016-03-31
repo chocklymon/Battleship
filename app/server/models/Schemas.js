@@ -8,14 +8,14 @@ var GameSchema = new mongoose.Schema({
     player2_ships: String,
     player2_board: String,
     history: [String],
-    status: String
+    status: {type: String, default: 'setup'} //setup, p1_turn, p2_turn, finished
 });
 
 var ShipSchema = new mongoose.Schema({
     game_id: String,
     player_name: String,
-    battleship_position: String,
-    battleship_location: String,
+    battleship_position: String, //number ex. 01, 35, 99, etc
+    battleship_location: String, //up, down, left, right
     carrier_position: String,
     carrier_location: String,
     cruiser_position: String,
@@ -29,7 +29,7 @@ var ShipSchema = new mongoose.Schema({
 var BoardSchema = new mongoose.Schema({
     game_id: String,
     player_name: String,
-    00: {type: String, default: 'none'},
+    00: {type: String, default: 'none'}, //none, hit, miss
     01: {type: String, default: 'none'},
     02: {type: String, default: 'none'},
     03: {type: String, default: 'none'},
@@ -130,11 +130,6 @@ var BoardSchema = new mongoose.Schema({
     98: {type: String, default: 'none'},
     99: {type: String, default: 'none'}
 });
-
-/*CommentSchema.methods.upvote = function(cb) {
-  this.upvotes += 1;
-  this.save(cb);
-};*/
 
 mongoose.model('Game', GameSchema);
 mongoose.model('Ship', ShipSchema);
