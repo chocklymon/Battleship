@@ -5,6 +5,7 @@
  * http://psitsmike.com/2011/10/node-js-and-socket-io-multiroom-chat-tutorial/
  * http://stackoverflow.com/a/10099325
  */
+var Promise = require('bluebird');
 var mongoose = require('mongoose');
 var Game = mongoose.model('Game');
 var Ship = mongoose.model('Ship');
@@ -28,19 +29,92 @@ module.exports = function(server, sessionHandler) {
         }
     });
 
+    var sendGamesList = function(socket) {
+        var username = socket.request.session.user.user;
+        var foundGames = {
+            public: [],
+            private: []
+        };
+
+        // Get the open games
+        var openGameQuery = Game.find({
+            status: 'setup'
+        }).where('player2').exists(false);
+        var openGamePromise = openGameQuery.exec(function(err, games) {
+            if (err) {
+                throw err;
+            }
+            foundGames.public = games;
+        });
+
+        // Get the user's games
+        var userGameQuery = Game.find({
+            status: {
+                '$ne': 'finished'
+            }
+        });
+        userGameQuery.or(
+            {
+                player1: username
+            },
+            {
+                status: {
+                    '$ne': 'finished'
+                }
+            }
+        );
+        userGameQuery.or(
+            {
+                player2: username
+            },
+            {
+                status: {
+                    '$ne': 'finished'
+                }
+            }
+        );
+        var userGamePromise = userGameQuery.exec(function(err, games) {
+            if (err) {
+                throw err;
+            }
+            foundGames.public = games;
+        });
+
+        // Once both types of games have been found send them to the user
+        Promise.all([openGamePromise, userGamePromise]).then(
+            function() {
+                // Send the list of games
+                socket.emit('games-list', foundGames);
+            },
+            function(err) {
+                // One or both of the queries had an error
+                console.warn('Error with getting a list of games: ', err);
+                socket.emit('error', 'Error getting games');
+            }
+        )
+    };
+
     // GameHub
     var gameHubSocket = io.of('/games');
 
     gameHubSocket.on('connection', function(socket) {
-        console.log('User connected to socket. ID: ', socket.request.session.user._id);
+        // Save the user information for easy access
+        var user = socket.request.session.user;
 
         // Send a list of all current games when the user joins
-        // TODO
-        socket.emit('games-list', {});
+        sendGamesList(socket);
 
+        // Handle events //
+
+        // Send a list of games when requested
+        socket.on('games-list', function() {
+            sendGamesList(socket);
+        });
+
+        // Handle adding a new game
         socket.on('game-add', function(name) {
             // Create and add a new game to the database
-            var newGame = {name: name, player1: socket.request.session.user.user};
+            var newGame = {name: name, player1: user.user};
             var games = new Game(newGame);
             games.save(function (err, games) {
                 if (err) {
@@ -51,13 +125,17 @@ module.exports = function(server, sessionHandler) {
                 }
             });
         });
+
+        // Handle a player joining a game
         socket.on('game-join', function(game) {
             // TODO mark a game as joined
             gameHubSocket.emit('game-join', game);
         });
+
+        // Handle a player sending a chat message
         socket.on('chat-message', function(msg) {
             //console.log('Socket.io Message Received: ' + msg);
-            gameHubSocket.emit('chat-message', {user: socket.request.session.user.user, msg: msg});
+            gameHubSocket.emit('chat-message', {user: user.user, msg: msg});
         });
     });
 

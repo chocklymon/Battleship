@@ -19,24 +19,69 @@ battleship.config(['$routeProvider', '$locationProvider',
     }]
 );
 
-battleship.controller('gamehub', ['$scope', function($scope) {
+
+// ----------------------
+// Factories and Services
+
+/**
+ * The IO factory wraps the socket.io library so that calls to it will automatically trigger an update to the views
+ * in angular.
+ */
+battleship.factory('io', ['$rootScope', function($rootScope) {
+    var socket = null;
+    var socketWrapper = {
+        on: function(event, callback) {
+            socket.on(event, function() {
+                var args = arguments;
+                $rootScope.$apply(function() {
+                    callback.apply(socket, args);
+                });
+            });
+        },
+        emit: function (eventName, data, callback) {
+            socket.emit(eventName, data, function () {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                    if (callback) {
+                        callback.apply(socket, args);
+                    }
+                });
+            })
+        }
+    };
+
+    return function(namespace) {
+        socket = io(namespace);
+        return socketWrapper;
+    };
+}]);
+
+
+// ----------------------
+//     Controllers
+
+battleship.controller('gamehub', ['$scope', 'io', function($scope, io) {
     var socket = io('/games');
 
+    // Define the socket events
     socket.on('game-add', function(game) {
         // TODO get the currently logged in user.
         //if (game.player1 == currentUser) {
-        //    $scope.personalGames.push(game);
+        //    $scope.games.private.push(game);
         //} else {
-            $scope.publicGames.push(game);
+            $scope.games.public.push(game);
         //}
-        $scope.$digest();
     });
-    //socket.on('games-list', function(games) {
-    //    $scope.publicGames = games;
-    //});
+    socket.on('games-list', function(games) {
+        if (games) {
+            $scope.games = games;
+        }
+    });
 
-    $scope.publicGames = [];
-    $scope.personalGames = [];
+    $scope.games = {
+        public: [],
+        private: []
+    };
     $scope.openCreateGameDialog = function() {
         $(".createGameOverlay").css("display", "block");
         $(".createGameModal").css("display", "block");

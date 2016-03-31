@@ -28,7 +28,8 @@
     "mongodb": "2.0.45",
     "mongoose": "^4.4.9",
     "socket.io": "~1.4.5",
-    "stylus": "0.52.4"
+    "stylus": "0.52.4",
+    "bluebird": "~3.3.4"
   },
   "engines": {
     "node": "4.2.1"
