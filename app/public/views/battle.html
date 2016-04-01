@@ -1,3 +1,187 @@
-<div>
-    BattleShips!
+<!-- For testing purposes, delete head section when finished 
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/customStyle.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="../js/controllers/battleController.js"></script>
+</head>-->
+<div ng-app="battleApp" ng-controller="battleController" id="battleship-game-wrap">
+    <h2>BattleShips!</h2>
+    <div id="left-column">
+    	Left Column
+    	<div id="enemy-ships">
+    		<button ng-click="selectShip('Carrier')" type="button">Carrier</button>
+    		<button ng-click="selectShip('Battleship')" type="button">Battleship</button>
+    		<button ng-click="selectShip('Cruiser')" type="button">Cruiser</button>
+    		<button ng-click="selectShip('Destroyer')" type="button">Destroyer</button>
+    		<button ng-click="selectShip('Submarine')" type="button">Submarine</button>
+    		<hr>
+    		<button ng-click="changeOrientation()" type="button">Change Orientation</button>
+    		<button ng-click="changeStateDebug()" type="button">Change Game State</button>
+    	</div>
+    	<div id="player-ships">
+    	</div>
+    	
+    </div>
+    <div id="boards">
+    	Boards go here
+    	<div id="enemy-board">
+    		<p>Current Selected Ship: {{ currentSelectedShip }}</p>
+    		<p>Current Ship Orientation: {{ currentShipOrientation }}</p>
+    		<p>Current Game Status: {{ gameStatus }}</p>
+    		<table class="board" id="enemy-board">
+    			<tr>
+    				<th></th>
+    				<th style="{{ test }}">A</th>
+    				<th>B</th>
+    				<th>C</th>
+    				<th>D</th>
+    				<th>E</th>
+    				<th>F</th>
+    				<th>G</th>
+    				<th>H</th>
+    				<th>I</th>
+    				<th>J</th>
+    			</tr>
+    			<tr>
+    				<td>0</td>
+    				<td id="C00" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C01" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C02" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C03" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C04" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C05" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C06" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C07" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C08" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C09" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    			</tr>
+    			<tr>
+    				<td>1</td>
+    				<td id="C10" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C11" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C12" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C13" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C14" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C15" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C16" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C17" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C18" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C19" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    			</tr>
+    			<tr>
+    				<td>2</td>
+    				<td id="C20" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C21" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C22" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C23" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C24" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C25" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C26" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C27" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C28" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C29" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    			</tr>
+    			<tr>
+    				<td>3</td>
+    				<td id="C30" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C31" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C32" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C33" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C34" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C35" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C36" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C37" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C38" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C39" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    			</tr>
+    			<tr>
+    				<td>4</td>
+    				<td id="C40" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C41" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C42" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C43" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C44" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C45" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C46" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C47" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C48" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C49" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    			</tr>
+    			<tr>
+    				<td>5</td>
+    				<td id="C50" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C51" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C52" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C53" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C54" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C55" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C56" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C57" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C58" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C59" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    			</tr>
+    			<tr>
+    				<td>6</td>
+    				<td id="C60" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C61" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C62" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C63" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C64" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C65" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C66" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C67" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C68" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C69" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    			</tr>
+    			<tr>
+    				<td>7</td>
+    				<td id="C70" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C71" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C72" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C73" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C74" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C75" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C76" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C77" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C78" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C79" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    			</tr>
+    			<tr>
+    				<td>8</td>
+    				<td id="C80" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C81" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C82" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C83" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C84" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C85" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C86" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C87" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C88" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C89" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    			</tr>
+    			<tr>
+    				<td>9</td>
+    				<td id="C90" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C91" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C92" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C93" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C94" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C95" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C96" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C97" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C98" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    				<td id="C99" ng-mouseleave="cellLeave($event)" ng-mousemove="cellHover($event)"></td>
+    			</tr>
+    		</table>
+    	</div>
+    	<div id="player-board">
+    	</div>
+    </div>
+    <div id="right-column">
+    	<div id="history-chat">
+    		Here is where the chat goes!
+    	</div>
+    	<div id ="player-status">
+    	</div>
+    </div>
 </div>
