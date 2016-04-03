@@ -1,7 +1,5 @@
 .gameHubWrap {
-	width: 80%;
 	background-color: white;
-	margin: auto;
 	margin-top: 30px;
 	padding: 2%;
 	box-shadow: 0px 0px 10px 2px #888;
@@ -25,3 +23,17 @@
 	font: 13.3333px Arial;
 	color: white;
 }*/
+
+/* Game Board Styles */
+.board td, .board th {
+    /* Main Board */
+    width: 50px;
+    height: 50px;
+    border: 1px solid grey;
+}
+
+.board th, .board td:first-child {
+    /* Board Headers */
+    text-align: center;
+    border: none;
+}
