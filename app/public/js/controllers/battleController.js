@@ -1,4 +1,7 @@
-battleship.controller("battleController",function($scope) {
+battleship.controller("battleController", function($scope, $routeParams) {
+	// Get the unique game ID
+	var gameId = $routeParams.gameId;
+
 	$scope.test = "color: red";
 	$scope.gameStatus = "Setup";
 	$scope.currentSelectedShip = "none";

@@ -9,7 +9,7 @@ battleship.config(['$routeProvider', '$locationProvider',
                 templateUrl: '/views/gamehub.html',
                 controller: 'gamehub'
             })
-            .when('/game', {
+            .when('/game/:gameId', {
                 templateUrl: '/views/battle.html',
                 controller: 'battleController'
             })
@@ -60,7 +60,7 @@ battleship.factory('io', ['$rootScope', function($rootScope) {
 // ----------------------
 //     Controllers
 
-battleship.controller('gamehub', ['$scope', 'io', function($scope, io) {
+battleship.controller('gamehub', ['$scope', '$location', 'io', function($scope, $location, io) {
     var socket = io('/games');
 
     // Define the socket events
@@ -92,6 +92,10 @@ battleship.controller('gamehub', ['$scope', 'io', function($scope, io) {
         $(".createGameModal").css("display", "none");
 
         socket.emit('game-add', $scope.gameName);
+    };
+
+    $scope.joinGame = function(game) {
+        $location.path('/game/' + game._id);
     };
 
     // TODO make this run in angular?
