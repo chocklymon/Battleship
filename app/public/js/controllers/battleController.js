@@ -1,5 +1,4 @@
-var battleApp = angular.module("battleApp", []);
-battleApp.controller("battleController",function($scope) {
+battleship.controller("battleController",function($scope) {
 	$scope.test = "color: red";
 	$scope.gameStatus = "Setup";
 	$scope.currentSelectedShip = "none";

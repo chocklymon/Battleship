@@ -11,7 +11,7 @@ battleship.config(['$routeProvider', '$locationProvider',
             })
             .when('/game', {
                 templateUrl: '/views/battle.html',
-                controller: 'battle'
+                controller: 'battleController'
             })
             .otherwise('/gamehub');
 
