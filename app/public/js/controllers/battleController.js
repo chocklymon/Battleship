@@ -1,6 +1,11 @@
-battleship.controller("battleController", function($scope, $routeParams) {
+battleship.controller("battleController", function($scope, $routeParams, io) {
 	// Get the unique game ID
 	var gameId = $routeParams.gameId;
+	var socket = io('/battle');
+	socket.emit('join', gameId);
+	socket.on('join', function(gameData) {
+		console.log(gameData);
+	});
 
 	$scope.test = "color: red";
 	$scope.gameStatus = "Setup";
@@ -8,6 +13,14 @@ battleship.controller("battleController", function($scope, $routeParams) {
 	$scope.currentShipOrientation = "none";
 	$scope.currentShipLength = 0;
 	$scope.selectedCells = [];
+	$scope.players = [
+		{
+			status: 'Offline'
+		},
+		{
+			status: 'Waiting'
+		}
+	];
 
 	$scope.cellHover = function(e) {
 		if ($scope.gameStatus == "Setup" && $scope.currentSelectedShip != "none") {
@@ -195,7 +208,11 @@ battleship.controller("battleController", function($scope, $routeParams) {
 				$scope.gameStatus = "Setup";
 				break;
 		}
-	}
+	};
+
+	$scope.boardClick = function($event) {
+		console.log('Board clicked at: ', $event.toElement);
+	};
 
 	$scope.boardSchema = {
 	    C00: {type: 'none', isOccupied: false, ship: 'none'},

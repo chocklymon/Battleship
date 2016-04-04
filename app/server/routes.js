@@ -51,7 +51,7 @@ module.exports = function(app) {
 		if (req.session.user == null){
 			res.redirect('/');
 		} else {
-			console.log("went to battleship game hub");
+			//console.log("went to battleship game hub");
 			res.sendFile('views/main.html', {
 				root: 'app/server/'
 			});

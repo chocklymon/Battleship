@@ -143,10 +143,18 @@ module.exports = function(server, sessionHandler) {
     var battleSocket = io.of('/battle');
 
     battleSocket.on('connection', function(socket) {
+        // Save the user information for easy access
+        var user = socket.request.session.user;
+
         socket.on('join', function(gameId) {
             // TODO user joined game code
+            console.log('User ', user._id, ' joined game ', gameId);
             socket.join(gameId);
             socket.gameId = gameId;
+
+            socket.emit('join', {
+                players: []
+            });
         });
         socket.on('disconnect', function() {
             // TODO user left game code
@@ -155,18 +163,21 @@ module.exports = function(server, sessionHandler) {
 
         // Room (game) specific events
         socket.on('fire-shot', function(shot) {
+            console.log('Shot fired');
             if (socket.gameId) {
                 // TODO handle a player firing a shot
                 battleSocket.to(socket.gameId).emit('fire-shot', shot);
             }
         });
         socket.on('setup-ready', function(shipLocations) {
+            console.log('setup finished');
             if (socket.gameId) {
                 // TODO handle a player finished setting up their board
                 battleSocket.to(socket.gameId).emit('setup-ready', socket.id);
             }
         });
         socket.on('chat-message', function(msg) {
+            console.log('Chat message', msg);
             if (socket.gameId) {
                 battleSocket.to(socket.gameId).emit('chat-message', msg);
             }
