@@ -10,8 +10,7 @@ var mongoose = require('mongoose');
 var Game = mongoose.model('Game');
 var Ship = mongoose.model('Ship');
 var Board = mongoose.model('Board');
-var Account = mongoose.model('Account');
-var _ = require('lodash');
+var Utils = require('./modules/GameUtils');
 
 module.exports = function(server, sessionHandler) {
     // Example for making a simple chat application
@@ -31,151 +30,19 @@ module.exports = function(server, sessionHandler) {
         }
     });
 
-    /**
-     * Converts an object's user ids to usernames
-     * @param {Array} objects An array of one or more objects to replace ids with usernames
-     * @param {Array} keys An array of one or more keys that contain user ids that should be replaced
-     * @returns {Promise}
-     */
-    function userIdsToNames(objects, keys) {
-        var userIds = {}, idsList, usersById;
-
-        var addUserIds = function(value) {
-            _.forEach(keys, function(key) {
-                if (value[key]) {
-                    userIds[value[key]] = true;
-                }
-            });
-        };
-        var addUserNames = function(value) {
-            _.forEach(keys, function(key) {
-                if (value[key]) {
-                    value[key] = usersById[value[key]].user;
-                }
-            });
-        };
-
-        _.forEach(objects, function (obj) {
-            _.forEach(obj, addUserIds);
-        });
-
-        idsList = _.keys(userIds);
-
-        return Account.find({
-            _id: {$in: idsList}
-        }).select('_id user').exec().then(
-            function(users) {
-                usersById = _.keyBy(users, '_id');
-                _.forEach(objects, function (obj) {
-                    _.forEach(obj, addUserNames);
-                });
-                return objects;
-            }
-        );
-    }
-
-    function userIdsToNamesSimple(object, keys) {
-        var userIds = {}, idsList, usersById;
-
-        var addUserIds = function(value) {
-            _.forEach(keys, function(key) {
-                if (value[key]) {
-                    userIds[value[key]] = true;
-                }
-            });
-        };
-        var addUserNames = function(value) {
-            _.forEach(keys, function(key) {
-                if (value[key]) {
-                    value[key] = usersById[value[key]].user;
-                }
-            });
-        };
-
-        addUserIds(object);
-
-        idsList = _.keys(userIds);
-
-        return Account.find({
-            _id: {$in: idsList}
-        }).select('_id user').exec().then(
-            function(users) {
-                usersById = _.keyBy(users, '_id');
-                addUserNames(object);
-                return object;
-            }
-        );
-    }
 
     var sendGamesList = function(socket) {
         var userId = socket.request.session.user._id;
-        var publicGames, privateGames;
-
-        // Get the open games
-        var openGameQuery = Game.find({
-            status: 'setup'
-        }).where('player2').exists(false);
-        var openGamePromise = openGameQuery.exec().then(function(games) {
-            //console.log('Public Games: ', games);
-            publicGames = games;
-        });
-
-        // Get the user's games
-        var userGameQuery = Game.find({
-            status: {
-                '$ne': 'finished'
-            }
-        });
-        userGameQuery.or(
-            {
-                player1: userId
-            },
-            {
-                status: {
-                    '$ne': 'finished'
-                }
-            }
-        );
-        userGameQuery.or(
-            {
-                player2: userId
-            },
-            {
-                status: {
-                    '$ne': 'finished'
-                }
-            }
-        );
-        var userGamePromise = userGameQuery.exec().then(function(games) {
-            //console.log('Private Games: ', games);
-            privateGames = games;
-        });
-
-        // Once both types of games have been found send them to the user
-        Promise.all([openGamePromise, userGamePromise]).then(
-            function() {
-                // Change the IDs to usernames
-                userIdsToNames([publicGames, privateGames], ['player1', 'player2']).then(
-                    function() {
-                        // Send the list of games
-                        socket.emit('games-list', {
-                            public: publicGames,
-                            private: privateGames
-                        });
-                    },
-                    function(err) {
-                        // Some sort of error
-                        console.warn("Query Error: ", err);
-                        socket.emit('app-error', 'Problem loading games');
-                    }
-                );
+        Utils.getGamesFor(userId).then(
+            function(games) {
+                //console.log(games);
+                socket.emit('games-list', games);
             },
             function(err) {
-                // One or both of the queries had an error
                 console.warn('Error with getting a list of games: ', err);
                 socket.emit('app-error', 'Error getting games');
             }
-        )
+        );
     };
 
     var checkInGame = function(socket) {
@@ -214,7 +81,16 @@ module.exports = function(server, sessionHandler) {
                     console.warn("Error with 'game-add' socket event: ", err);
                     socket.emit('app-error', 'Error adding game to database');
                 } else {
-                    gameHubSocket.emit('game-add', game);
+                    // Add the usernames to the game and then send out to all players
+                    Utils.userIdsToNames(game, ['player1', 'player2'], true).then(
+                        function() {
+                            gameHubSocket.emit('game-add', game);
+                        },
+                        function(err) {
+                            console.warn("Error with 'game-add' socket event: ", err);
+                            socket.emit('app-error', 'Error adding game');
+                        }
+                    );
                 }
             });
         });
@@ -268,7 +144,7 @@ module.exports = function(server, sessionHandler) {
 
             Promise.all([gameFoundPromise, boardFoundPromise]).then(
                 function() {
-                    userIdsToNamesSimple(gameData.game, ['player1', 'player2']).then(
+                    Utils.userIdsToNames(gameData.game, ['player1', 'player2'], true).then(
                         function() {
                             socket.emit('join', gameData);
                         },
