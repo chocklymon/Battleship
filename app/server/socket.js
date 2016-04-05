@@ -121,12 +121,12 @@ module.exports = function(server, sessionHandler) {
             // Create and add a new game to the database
             var newGame = {name: name, player1: user.user};
             var games = new Game(newGame);
-            games.save(function (err, games) {
+            games.save(function (err, game) {
                 if (err) {
                     console.warn("Error with 'game-add' socket event: ", err);
                     socket.emit('app-error', 'Error adding game to database');
                 } else {
-                    gameHubSocket.emit('game-add', newGame);
+                    gameHubSocket.emit('game-add', game);
                 }
             });
         });
