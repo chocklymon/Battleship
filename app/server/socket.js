@@ -40,10 +40,8 @@ module.exports = function(server, sessionHandler) {
         var openGameQuery = Game.find({
             status: 'setup'
         }).where('player2').exists(false);
-        var openGamePromise = openGameQuery.exec(function(err, games) {
-            if (err) {
-                throw err;
-            }
+        var openGamePromise = openGameQuery.exec().then(function(games) {
+            //console.log('Public Games: ', games);
             foundGames.public = games;
         });
 
@@ -73,11 +71,9 @@ module.exports = function(server, sessionHandler) {
                 }
             }
         );
-        var userGamePromise = userGameQuery.exec(function(err, games) {
-            if (err) {
-                throw err;
-            }
-            foundGames.public = games;
+        var userGamePromise = userGameQuery.exec().then(function(games) {
+            //console.log('Private Games: ', games);
+            foundGames.private = games;
         });
 
         // Once both types of games have been found send them to the user
@@ -89,9 +85,18 @@ module.exports = function(server, sessionHandler) {
             function(err) {
                 // One or both of the queries had an error
                 console.warn('Error with getting a list of games: ', err);
-                socket.emit('error', 'Error getting games');
+                socket.emit('app-error', 'Error getting games');
             }
         )
+    };
+
+    var checkInGame = function(socket) {
+        if (socket.gameId) {
+            return true;
+        } else {
+            socket.emit('rejoin', true);
+            return false;
+        }
     };
 
     // GameHub
@@ -119,7 +124,7 @@ module.exports = function(server, sessionHandler) {
             games.save(function (err, games) {
                 if (err) {
                     console.warn("Error with 'game-add' socket event: ", err);
-                    socket.emit('error', 'Error adding game to database');
+                    socket.emit('app-error', 'Error adding game to database');
                 } else {
                     gameHubSocket.emit('game-add', newGame);
                 }
@@ -152,9 +157,36 @@ module.exports = function(server, sessionHandler) {
             socket.join(gameId);
             socket.gameId = gameId;
 
-            socket.emit('join', {
-                players: []
+            var gameData = {};
+            var gameFoundPromise = Game.findById(gameId).exec().then(function(game) {
+                if (game.player1 != user.user && !game.player2) {
+                    game.player2 = user.user;
+                    game.save(function(err) {
+                        if (err) {
+                            console.warn('Player two unable to join', err);
+                            socket.emit('app-error', 'Failed to join game');
+                        }
+                    });
+                }
+
+                gameData.game = game;
             });
+            var boardFoundPromise = Board.findOne({
+                game_id: gameId,
+                player_name: user.user
+            }).exec().then(function(board) {
+                gameData.board = board;
+            });
+
+            Promise.all([gameFoundPromise, boardFoundPromise]).then(
+                function() {
+                    socket.emit('join', gameData);
+                },
+                function(err) {
+                    console.warn('Problem getting game information', err);
+                    socket.emit('app-error', 'Problem joining game');
+                }
+            );
         });
         socket.on('disconnect', function() {
             // TODO user left game code
@@ -164,21 +196,21 @@ module.exports = function(server, sessionHandler) {
         // Room (game) specific events
         socket.on('fire-shot', function(shot) {
             console.log('Shot fired');
-            if (socket.gameId) {
+            if (checkInGame(socket)) {
                 // TODO handle a player firing a shot
                 battleSocket.to(socket.gameId).emit('fire-shot', shot);
             }
         });
         socket.on('setup-ready', function(shipLocations) {
             console.log('setup finished');
-            if (socket.gameId) {
+            if (checkInGame(socket)) {
                 // TODO handle a player finished setting up their board
                 battleSocket.to(socket.gameId).emit('setup-ready', socket.id);
             }
         });
         socket.on('chat-message', function(msg) {
             console.log('Chat message', msg);
-            if (socket.gameId) {
+            if (checkInGame(socket)) {
                 battleSocket.to(socket.gameId).emit('chat-message', msg);
             }
         });

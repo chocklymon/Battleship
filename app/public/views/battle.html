@@ -177,13 +177,14 @@
     	</div>
     	<div id="player-status">
 			<div class="row" ng-repeat="player in players">
-				<div class="col-xs-1" ng-switch="player.status">
+				<div class="col-xs-4" ng-switch="player.status">
 					<span ng-switch-when="Waiting" class="glyphicon glyphicon-hourglass"></span>
 					<span ng-switch-when="Offline" class="glyphicon glyphicon-ban-circle"></span>
 					<span ng-switch-default="">&bull;</span>
-				</div>
-				<div class="col-xs-11">
 					{{player.status}}
+				</div>
+				<div class="col-xs-8">
+					{{player.name}}
 				</div>
 			</div>
     	</div>
