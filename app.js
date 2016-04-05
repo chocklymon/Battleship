@@ -14,7 +14,7 @@ var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')(session);
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/mongo_games');
+mongoose.connect('mongodb://localhost/battleship');
 
 require('./app/server/models/Schemas');
 
@@ -25,7 +25,7 @@ var sessionHandler = session({
 	proxy: true,
 	resave: true,
 	saveUninitialized: true,
-	store: new MongoStore({ host: 'localhost', port: 27017, db: 'node-login'})
+	store: new MongoStore({ host: 'localhost', port: 27017, db: 'battleship'})
 });
 
 app.set('port', process.env.PORT || 3002);

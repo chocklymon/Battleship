@@ -15,6 +15,7 @@
     "url": "git@github.com:chocklymon/Battleship.git"
   },
   "dependencies": {
+    "bluebird": "^3.3.4",
     "body-parser": "1.14.1",
     "bower": "^1.7.7",
     "connect-mongo": "0.8.2",
@@ -24,12 +25,12 @@
     "express": "4.13.3",
     "express-session": "1.11.3",
     "jade": "1.11.0",
+    "lodash": "^4.8.2",
     "moment": "2.10.3",
     "mongodb": "2.0.45",
     "mongoose": "^4.4.9",
     "socket.io": "~1.4.5",
-    "stylus": "0.52.4",
-    "bluebird": "~3.3.4"
+    "stylus": "0.52.4"
   },
   "engines": {
     "node": "4.2.1"

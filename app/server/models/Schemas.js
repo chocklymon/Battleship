@@ -13,7 +13,7 @@ var GameSchema = new mongoose.Schema({
 
 var ShipSchema = new mongoose.Schema({
     game_id: String,
-    player_name: String,
+    player_id: String,
     battleship_position: String, //number ex. 01, 35, 99, etc
     battleship_location: String, //up, down, left, right
     carrier_position: String,
@@ -28,7 +28,7 @@ var ShipSchema = new mongoose.Schema({
 
 var BoardSchema = new mongoose.Schema({
     game_id: String,
-    player_name: String,
+    player_id: String,
     00: {type: String, default: 'none'}, //none, hit, miss
     01: {type: String, default: 'none'},
     02: {type: String, default: 'none'},
@@ -131,6 +131,16 @@ var BoardSchema = new mongoose.Schema({
     99: {type: String, default: 'none'}
 });
 
+var AccountSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    user: String,
+    pass: String,
+    country: String,
+    date: String
+});
+
 mongoose.model('Game', GameSchema);
 mongoose.model('Ship', ShipSchema);
 mongoose.model('Board', BoardSchema);
+mongoose.model('Account', AccountSchema);
