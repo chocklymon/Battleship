@@ -27,8 +27,26 @@ battleship.config(['$routeProvider', '$locationProvider',
  * The IO factory wraps the socket.io library so that calls to it will automatically trigger an update to the views
  * in angular.
  */
-battleship.factory('io', ['$rootScope', function($rootScope) {
+battleship.factory('io', ['$rootScope', '$location', function($rootScope, $location) {
     var socket = null;
+    var errorHandler = function(err) {
+        console.warn('App Error: ', err);
+
+        var cssClass = 'alert-danger';
+        if (err.type == 'warning') {
+            cssClass = 'alert-warning';
+        }
+        err['class'] = cssClass;
+
+        if (!angular.isArray($rootScope.messages)) {
+            $rootScope.messages = [];
+        }
+        $rootScope.messages.push(err);
+
+        if (err.redirect) {
+            $location.path(err.navigateTo);
+        }
+    };
     var socketWrapper = {
         on: function(event, callback) {
             socket.on(event, function() {
@@ -50,10 +68,19 @@ battleship.factory('io', ['$rootScope', function($rootScope) {
         }
     };
 
-    return function(namespace) {
+    var factory = function(namespace) {
         socket = io(namespace);
+        socketWrapper.on('app-error', errorHandler);
         return socketWrapper;
     };
+    factory.getSocket = function() {
+        return socketWrapper;
+    };
+    factory.getRawSocket = function() {
+        return socket;
+    };
+
+    return factory;
 }]);
 
 

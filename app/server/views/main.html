@@ -12,6 +12,14 @@
     <title>Battleship</title>
 </head>
 <body>
+<div class="error-messages">
+    <div class="alert" data-ng-repeat="msg in messages" data-ng-class="msg.class" role="alert">
+        <button type="button" class="close" data-ng-click="messages.splice($index, 1)" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{msg.msg}}
+    </div>
+</div>
 <div data-ng-view="">
 </div>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>

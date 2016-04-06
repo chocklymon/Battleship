@@ -30,6 +30,26 @@ module.exports = function(server, sessionHandler) {
         }
     });
 
+    // Functions //
+    var errorTypes = {
+        WARNING: 'warning',
+        ERROR: 'error'
+    };
+
+    var emitError = function(socket, errorMsg, type, redirect, sendTo) {
+        if (!type) {
+            type = errorTypes.WARNING;
+        }
+        if (redirect && !sendTo) {
+            sendTo = '/';
+        }
+        socket.emit('app-error', {
+            msg: errorMsg,
+            type: type,
+            redirect: redirect,
+            navigateTo: sendTo
+        });
+    };
 
     var sendGamesList = function(socket) {
         var userId = socket.request.session.user._id;
@@ -40,7 +60,7 @@ module.exports = function(server, sessionHandler) {
             },
             function(err) {
                 console.warn('Error with getting a list of games: ', err);
-                socket.emit('app-error', 'Error getting games');
+                emitError(socket, 'Error getting games');
             }
         );
     };
@@ -93,7 +113,7 @@ module.exports = function(server, sessionHandler) {
             games.save(function (err, game) {
                 if (err) {
                     console.warn("Error with 'game-add' socket event: ", err);
-                    socket.emit('app-error', 'Error adding game to database');
+                    emitError(socket, 'Error adding game to database');
                 } else {
                     // Add the usernames to the game and then send out to all players
                     Utils.userIdsToNames(game, ['player1', 'player2'], true).then(
@@ -102,7 +122,7 @@ module.exports = function(server, sessionHandler) {
                         },
                         function(err) {
                             console.warn("Error with 'game-add' socket event: ", err);
-                            socket.emit('app-error', 'Error adding game');
+                            emitError(socket, 'Error adding game');
                         }
                     );
                 }
@@ -142,7 +162,7 @@ module.exports = function(server, sessionHandler) {
                     game.save(function(err) {
                         if (err) {
                             console.warn('Player two unable to join', err);
-                            socket.emit('app-error', 'Failed to join game');
+                            emitError(socket, 'Failed to join game');
                         }
                     });
                 }
@@ -164,13 +184,13 @@ module.exports = function(server, sessionHandler) {
                         },
                         function(err) {
                             console.warn('Problem getting game information', err);
-                            socket.emit('app-error', 'Problem joining game');
+                            emitError(socket, 'Problem joining game');
                         }
                     );
                 },
                 function(err) {
                     console.warn('Problem getting game information', err);
-                    socket.emit('app-error', 'Problem joining game');
+                    emitError(socket, 'Problem joining game');
                 }
             );
         });
