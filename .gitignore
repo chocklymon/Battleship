@@ -32,6 +32,7 @@ build/Release
 
 # Dependency directory
 node_modules
+app/public/vendor
 
 # Optional npm cache directory
 .npm

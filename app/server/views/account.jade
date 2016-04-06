@@ -5,39 +5,39 @@
 input(type='hidden', value= user._id)#userId
 
 #account-form-container
-	form( method="post")#account-form.form-horizontal.well.span6
+	form( method="post")#account-form.form-horizontal.well
 		h1
 		p#sub1.subheading Please tell us a little about yourself.
 		hr
 		fieldset
-			#name-cg.control-group
-				label.control-label(for='name-tf') Name
-				.controls
-					input#name-tf(type='text', name='name', value= user.name)
-			#email-cg.control-group
-				label.control-label(for='email-tf') Email
-				.controls
-					input#email-tf(type='text', name='email', value= user.email)
-			#clist-cg.control-group
-				label.control-label(for='country-list') Location
-				.controls
-					select#country-list(name='country')
+			#name-cg.form-group
+				label.col-sm-3.control-label(for='name-tf') Name
+				.col-sm-9
+					input#name-tf(type='text', name='name', value= user.name).form-control
+			#email-cg.form-group
+				label.col-sm-3.control-label(for='email-tf') Email
+				.col-sm-9
+					input#email-tf(type='text', name='email', value= user.email).form-control
+			#clist-cg.form-group
+				label.col-sm-3.control-label(for='country-list') Location
+				.col-sm-9
+					select#country-list(name='country').form-control
 						each item in countries
 							option(selected=item.name == user.country)= item.name
 			hr
 			p#sub2.subheading
-			#user-cg.control-group
-				label.control-label(for='user-tf') Username
-				.controls
-					input#user-tf.disabled(type='text', name='user', value= user.user)
-			#pass-cg.control-group
-				label.control-label(for='pass-tf') Password
-				.controls
-					input#pass-tf(type='password', name='pass', value='')
+			#user-cg.form-group
+				label.col-sm-3.control-label(for='user-tf') Username
+				.col-sm-9
+					input#user-tf.disabled(type='text', name='user', value= user.user).form-control
+			#pass-cg.form-group
+				label.col-sm-3.control-label(for='pass-tf') Password
+				.col-sm-9
+					input#pass-tf(type='password', name='pass', value='').form-control
 			hr
 			.form-buttons
-				button(type='button')#account-form-btn1.btn
-				button(type='submit')#account-form-btn2.btn
+				button(type='button')#account-form-btn1.btn.btn-default
+				button(type='submit')#account-form-btn2.btn.btn-default
 
 // display form errors in a custom modal window //
 

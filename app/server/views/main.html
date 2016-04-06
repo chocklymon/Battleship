@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="battleship">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="/battleship/">
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/customStyle.css">
+    <title>Battleship</title>
+</head>
+<body>
+<div class="error-messages">
+    <div class="alert" data-ng-repeat="msg in messages" data-ng-class="msg.class" role="alert">
+        <button type="button" class="close" data-ng-click="messages.splice($index, 1)" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{msg.msg}}
+    </div>
+</div>
+<div data-ng-view="">
+</div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.js"></script>
+<script type="text/javascript" src="../js/main.js"></script>
+<script type="text/javascript" src="../js/controllers/battleController.js"></script>
+</body>
+</html>

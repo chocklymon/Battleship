@@ -12,16 +12,17 @@ body {
 }
 #login-container {
   width: 340px;
-  margin: 160px auto;
+  margin: 60px auto;
 }
 #login-container label {
   margin: 15px 0 5px 5px;
+  font-weight: normal;
 }
 #login-container button {
   width: 150px;
   padding: 6px 40px 6px 40px;
   float: left;
-  margin-top: 15px;
+  margin-top: -7px;
 }
 #login-container .checkbox {
   margin: 23px 0 0 180px;
@@ -42,19 +43,12 @@ body {
   width: 460px;
   margin: 100px auto;
 }
-#country-list {
-  width: 310px;
-}
 .modal-form-errors li {
   color: #808080;
   text-shadow: -1px 1px 0 #fff;
   -moz-text-shadow: -1px 1px 0 #fff;
   -webkit-text-shadow: -1px 1px 0 #fff;
   color: #d8000c;
-}
-.modal-single-input {
-  width: 452px;
-  margin: -200px 0 0 -232px;
 }
 .modal-single-input form {
   color: #808080;
@@ -69,21 +63,10 @@ body {
 .modal-single-input form #submit {
   float: right;
 }
-.modal-single-input .modal-body {
-  height: 100%;
-}
-.modal-single-input .modal-footer {
-  clear: both;
-  height: 20px;
-}
 .modal-single-input .modal-footer button {
   width: 80px;
   margin-top: -4px;
   margin-right: 2px;
-}
-.modal-alert {
-  width: 400px;
-  margin: -200px 0 0 -150px;
 }
 #btn-logout {
   width: 120px;
@@ -104,9 +87,6 @@ body {
   margin-left: 0;
   border: 1px solid #ccc;
 }
-.form-horizontal .control-label {
-  width: 80px;
-}
 .form-horizontal .controls {
   margin-left: 120px;
 }
@@ -117,9 +97,6 @@ body {
 .form-horizontal .form-buttons .btn {
   width: 80px;
   margin-left: 8px;
-}
-.form-horizontal input {
-  width: 300px;
 }
 label {
   color: #808080;

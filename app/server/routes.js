@@ -3,9 +3,12 @@ var CT = require('./modules/country-list');
 var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
 
-module.exports = function(app) {
 
-// main login page //
+module.exports = function(app) {
+    
+
+    
+    // main login page //
 	app.get('/', function(req, res){
 	// check if the user's credentials are saved in a cookie //
 		if (req.cookies.user == undefined || req.cookies.pass == undefined){
@@ -28,7 +31,7 @@ module.exports = function(app) {
 	app.post('/', function(req, res){
 		AM.manualLogin(req.body['user'], req.body['pass'], function(e, o){
 			if (!o){
-				conosle.log("!o");
+				console.log("!o");
 				res.status(400).send(e);
 			}	else{
 				console.log("!o else");
@@ -44,13 +47,13 @@ module.exports = function(app) {
 	
 // logged-in user homepage //
 
-	app.get('/battleship', function(req, res) {
+	app.get('/battleship*', function(req, res) {
 		if (req.session.user == null){
 			res.redirect('/');
 		} else {
-			console.log("went to battleship game hub");
-			res.sendFile('html/battleship.html', {
-				root: 'app/public/'
+			//console.log("went to battleship game hub");
+			res.sendFile('views/main.html', {
+				root: 'app/server/'
 			});
 		}	
 	});
@@ -98,7 +101,7 @@ module.exports = function(app) {
 		res.clearCookie('user');
 		res.clearCookie('pass');
 		req.session.destroy(function(e){ res.status(200).send('ok'); });
-	})
+	});
 	
 // creating new accounts //
 	
@@ -199,6 +202,6 @@ module.exports = function(app) {
 		});
 	});
 	
-	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
+	//app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
 
 };
