@@ -24,6 +24,10 @@
 	color: white;
 }*/
 
+.gameListing {
+	margin-bottom: 10px;
+}
+
 /* Game Board Styles */
 .board td, .board th {
     /* Main Board */

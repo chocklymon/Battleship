@@ -50,12 +50,17 @@ function userIdsToNames(objects, keys) {
     );
 }
 
+/**
+ * Gets the games for a user.
+ * @param userId
+ * @returns {Promise}
+ */
 function getGamesFor(userId) {
     var publicGames, privateGames;
 
     // Get the open games
     var openGameQuery = Game.find({
-        status: 'setup'
+        player1: {'$ne': userId}
     }).where('player2').exists(false);
     var openGamePromise = openGameQuery.exec().then(function(games) {
         //console.log('Public Games: ', games);
