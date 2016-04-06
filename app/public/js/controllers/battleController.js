@@ -1,5 +1,38 @@
-pp = angular.module("battleApp", []);
-battleApp.controller("battleController",function($scope) {
+battleship.controller("battleController", function($scope, $routeParams, io) {
+	// Get the unique game ID
+	var gameId = $routeParams.gameId;
+
+	// Get the socket and then join the game
+	var socket = io('/battle');
+	socket.emit('join', gameId);
+
+	// Socket events
+	socket.on('disconnect', function() {
+		// TODO display to the user that we have been disconnected from the server
+		console.log('Disconnected', arguments);
+	});
+	socket.on('join', function(gameData) {
+		// Server has acknowledged that we joined the game, update the game data with the current data from the server
+		// TODO
+		console.log(gameData);
+		if (gameData.game) {
+			$scope.players = [{
+				name: gameData.game.player1,
+				status: 'Unknown'
+			}];
+			if (gameData.game.player2) {
+				$scope.players.push({
+					name: gameData.game.player2,
+					status: 'Unknown'
+				});
+			}
+		}
+	});
+	socket.on('rejoin', function() {
+		// Rejoin the game, this typically only happens if the server was restarted
+		socket.emit('join', gameId)
+	});
+
 	$scope.test = "color: red";
 	$scope.gameStatus = "Setup";
 	$scope.currentSelectedShip = "none";
@@ -7,6 +40,7 @@ battleApp.controller("battleController",function($scope) {
 	$scope.currentShipLength = 0;
 	$scope.selectedCells = [];
 	$scope.myPlayer = "1";
+	$scope.players = [];
 
 	$scope.cellHover = function(e) {
 		if ($scope.gameStatus == "Setup" && $scope.currentSelectedShip != "none") {
