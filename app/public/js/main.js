@@ -62,15 +62,18 @@ battleship.factory('io', ['$rootScope', function($rootScope) {
 
 battleship.controller('gamehub', ['$scope', '$location', 'io', function($scope, $location, io) {
     var socket = io('/games');
+    var user;
 
     // Define the socket events
+    socket.on('user-info', function(userInfo) {
+        user = userInfo;
+    });
     socket.on('game-add', function(game) {
-        // TODO get the currently logged in user.
-        //if (game.player1 == currentUser) {
-        //    $scope.games.private.push(game);
-        //} else {
+        if (user && (game.player1 == user.username || game.player2 == user.username)) {
+            $scope.games.private.push(game);
+        } else {
             $scope.games.public.push(game);
-        //}
+        }
     });
     socket.on('games-list', function(games) {
         if (games) {

@@ -45,6 +45,14 @@ module.exports = function(server, sessionHandler) {
         );
     };
 
+    var sendUserInfo = function(socket) {
+        var userInfo = {
+            'username': socket.request.session.user.user,
+            'id': socket.request.session.user._id
+        };
+        socket.emit('user-info', userInfo);
+    };
+
     var checkInGame = function(socket) {
         if (socket.gameId) {
             return true;
@@ -61,14 +69,20 @@ module.exports = function(server, sessionHandler) {
         // Save the user information for easy access
         var user = socket.request.session.user;
 
-        // Send a list of all current games when the user joins
+        // Send a list of all current games and the user's datawhen the user joins
         sendGamesList(socket);
+        sendUserInfo(socket);
 
         // Handle events //
 
         // Send a list of games when requested
         socket.on('games-list', function() {
             sendGamesList(socket);
+        });
+
+        // Send the users information when requested
+        socket.on('user-info', function() {
+            sendUserInfo(socket);
         });
 
         // Handle adding a new game
