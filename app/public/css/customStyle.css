@@ -54,3 +54,18 @@
     text-align: center;
     border: none;
 }
+#left-column {
+    float: left;
+    width: 100px;
+    padding: 10px;
+}
+#boards {
+    float: left;
+    width: 580px;
+    padding: 10px;
+}
+#right-column {
+    float: left;
+    width: 150px;
+    padding: 10px;
+}
