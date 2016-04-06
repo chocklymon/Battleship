@@ -11,11 +11,6 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		// TODO display to the user that we have been disconnected from the server
 		console.log('Disconnected', arguments);
 	});
-	socket.on('app-error', function(err) {
-		// The server sent an error message to us
-		// TODO display the error message to the end user
-		console.warn('Socket received error message: ', err);
-	});
 	socket.on('join', function(gameData) {
 		// Server has acknowledged that we joined the game, update the game data with the current data from the server
 		// TODO

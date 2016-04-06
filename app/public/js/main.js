@@ -107,6 +107,44 @@ battleship.controller('gamehub', ['$scope', '$location', 'io', function($scope, 
             $scope.games = games;
         }
     });
+    socket.on('game-join', function(gameId) {
+        // Player has joined a game, open the game page
+        $location.path('/game/' + gameId);
+    });
+    socket.on('game-update', function(game) {
+        // A game has been updated
+        // Find the game
+        var index = -1;
+        var isPublic = false;
+        angular.forEach($scope.games, function(games, key) {
+            if (index == -1) {
+                for (var i = 0, l = games.length; i < l; i++) {
+                    if (games[i]._id == game._id) {
+                        games[i] = game;
+                        index = i;
+                        isPublic = (key == 'public');
+                        break;
+                    }
+                }
+            }
+        });
+
+        // Handle moving public games bettween the lists
+        if (index >= 0 && isPublic) {
+            if (game.player1 == user.username || game.player2 == user.username) {
+                // Move from public to private
+                $scope.games.private.push($scope.games.public[index]);
+            }
+            // Remove the game from public
+            $scope.games.public.splice(index, 1);
+        }
+
+        $scope.joinDisabled = false;
+    });
+    socket.on('app-error', function() {
+        // The server sent an error message to us, this may be due to a failed game join, re-enabled the join game buttons
+        $scope.joinDisabled = false;
+    });
 
     $scope.games = {
         public: [],
@@ -125,7 +163,8 @@ battleship.controller('gamehub', ['$scope', '$location', 'io', function($scope, 
     };
 
     $scope.joinGame = function(game) {
-        $location.path('/game/' + game._id);
+        socket.emit('game-join', game._id);
+        $scope.joinDisabled = true;
     };
 
     // TODO make this run in angular?

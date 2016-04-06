@@ -130,9 +130,49 @@ module.exports = function(server, sessionHandler) {
         });
 
         // Handle a player joining a game
-        socket.on('game-join', function(game) {
-            // TODO mark a game as joined
-            gameHubSocket.emit('game-join', game);
+        socket.on('game-join', function(gameId) {
+            //console.log("game-join", gameId);
+            // Have the user join the given game
+            Game.findById(gameId).exec().then(
+                function(game) {
+                    if (game.player1 == user._id) {
+                        // Player is the first player
+                        socket.emit('game-join', gameId);
+                    } else if (!game.player2) {
+                        // Player is joining as the second player
+                        game.player2 = user._id;
+                        game.save(function(err) {
+                            if (err) {
+                                console.warn('Player two unable to join: ', err);
+                                emitError(socket, 'Failed to join game');
+                            } else {
+                                // Player was able to join, update all clients about this
+                                Utils.userIdsToNames(game, ['player1', 'player2'], true).then(
+                                    function() {
+                                        gameHubSocket.emit('game-update', game);
+                                        socket.emit('game-join', gameId);
+                                    },
+                                    function() {
+                                        console.warn('Problem getting user names: ', err);
+                                        emitError(socket, 'Failed to join game');
+                                    }
+                                );
+
+                            }
+                        });
+                    } else if (game.player2 == user._id) {
+                        // Player is the scond player
+                        socket.emit('game-join', gameId);
+                    } else {
+                        // Attempting to join a game that the player isn't part of
+                        emitError(socket, 'Game is already filled', errorTypes.WARNING);
+                    }
+                },
+                function(err) {
+                    console.warn('Problem during game join: ', err);
+                    emitError(socket, 'Failed to join game');
+                }
+            );
         });
 
         // Handle a player sending a chat message
@@ -150,24 +190,21 @@ module.exports = function(server, sessionHandler) {
         var user = socket.request.session.user;
 
         socket.on('join', function(gameId) {
-            // TODO user joined game code
-            console.log('User ', user._id, ' joined game ', gameId);
-            socket.join(gameId);
-            socket.gameId = gameId;
-
+            //console.log('User ', user._id, ' joined game ', gameId);
+            // Get the game data
             var gameData = {};
             var gameFoundPromise = Game.findById(gameId).exec().then(function(game) {
-                if (game.player1 != user._id && !game.player2) {
-                    game.player2 = user._id;
-                    game.save(function(err) {
-                        if (err) {
-                            console.warn('Player two unable to join', err);
-                            emitError(socket, 'Failed to join game');
-                        }
-                    });
-                }
+                // Verify the user is in this game
+                if (game.player1 == user._id || game.player2 == user._id) {
+                    // User in the game
+                    socket.join(gameId);
+                    socket.gameId = gameId;
 
-                gameData.game = game;
+                    gameData.game = game;
+                } else {
+                    // Attempted to join a game that they are not part of
+                    emitError(socket, 'Game already filled', errorTypes.WARNING, true);
+                }
             });
             var boardFoundPromise = Board.findOne({
                 game_id: gameId,
@@ -190,7 +227,7 @@ module.exports = function(server, sessionHandler) {
                 },
                 function(err) {
                     console.warn('Problem getting game information', err);
-                    emitError(socket, 'Problem joining game');
+                    emitError(socket, 'Problem joining game', errorTypes.ERROR, true);
                 }
             );
         });
