@@ -177,5 +177,3 @@ battleship.controller('gamehub', ['$scope', '$location', 'io', function($scope, 
     });
 
 }]);
-
-battleship.controller('battle', [function() {}]);

@@ -254,7 +254,7 @@ module.exports = function(server, sessionHandler) {
         socket.on('chat-message', function(msg) {
             console.log('Chat message', msg);
             if (checkInGame(socket)) {
-                battleSocket.to(socket.gameId).emit('chat-message', msg);
+                battleSocket.to(socket.gameId).emit('chat-message', {user: user.user, msg: msg});
             }
         });
     });
