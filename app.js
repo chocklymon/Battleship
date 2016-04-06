@@ -28,7 +28,7 @@ var sessionHandler = session({
 	store: new MongoStore({ host: 'localhost', port: 27017, db: 'battleship'})
 });
 
-app.set('port', process.env.PORT || 3002);
+app.set('port', process.env.PORT || 3008);
 app.set('views', __dirname + '/app/server/views');
 app.set('view engine', 'jade');
 app.use(cookieParser());
