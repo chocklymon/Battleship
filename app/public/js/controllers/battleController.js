@@ -389,6 +389,10 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			}
 			$scope.currentSelectedShip = "none";
 			$scope.currentShipOrientation = "none";
+            
+            if ($scope.playerShipSchema.carrier_location != "none" && $scope.playerShipSchema.battleship_location != "none" && $scope.playerShipSchema.cruiser_location != "none" && $scope.playerShipSchema.submarine_location != "none" && $scope.playerShipSchema.destroyer_location != "none"){
+                    socket.emit('setup-ready', ships);
+            }
 		}
 	}
 
