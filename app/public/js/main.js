@@ -35,6 +35,8 @@ battleship.factory('io', ['$rootScope', '$location', function($rootScope, $locat
         var cssClass = 'alert-danger';
         if (err.type == 'warning') {
             cssClass = 'alert-warning';
+        } else if (err.type == 'notice') {
+            cssClass = 'alert-info';
         }
         err['class'] = cssClass;
 

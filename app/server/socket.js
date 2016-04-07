@@ -33,7 +33,8 @@ module.exports = function(server, sessionHandler) {
     // Functions //
     var errorTypes = {
         WARNING: 'warning',
-        ERROR: 'error'
+        ERROR: 'error',
+        NOTICE: 'notice'
     };
 
     var emitError = function(socket, errorMsg, type, redirect, sendTo) {
@@ -239,17 +240,75 @@ module.exports = function(server, sessionHandler) {
 
         // Room (game) specific events
         socket.on('fire-shot', function(shot) {
-            console.log('Shot fired');
+            console.log('Shot fired: ', socket.gameId);
             if (checkInGame(socket)) {
-                // TODO handle a player firing a shot
-                battleSocket.to(socket.gameId).emit('fire-shot', shot);
+                var shotData = {hit: false, coords: shot, player: user._id};
+
+                Utils.getGameData(socket.gameId).then(function(gameData) {
+                    //console.log(gameData);
+                    if (gameData.game.status == 'setup') {
+                        emitError(socket, 'Unable to fire shots during setup', errorTypes.NOTICE);
+                    } else if (gameData.game.status == 'EndGame') {
+                        emitError(socket, 'Unable to fire shots in a completed game', errorTypes.NOTICE);
+                    } else {
+                        var enemyBoard, playerBoard;
+                        if (gameData.game.status == 'PlayerOneTurn') {
+                            enemyBoard = gameData.board2;
+                            playerBoard = gameData.board1;
+                            gameData.game.status = 'PlayerTwoTurn';
+                        } else {
+                            enemyBoard = gameData.board1;
+                            playerBoard = gameData.board2;
+                            gameData.game.status = 'PlayerOneTurn';
+                        }
+
+                        if (enemyBoard[shot].isOccupied) {
+                            // Hit
+                            playerBoard[shot].type = 'hit';
+                            shotData.hit = true;
+                        } else {
+                            // Miss
+                            playerBoard[shot].type = 'miss';
+                        }
+                        return Promise.all([playerBoard.save(), gameData.game.save()]).then(
+                            function() {
+                                // Data updated and shot was registered
+                                battleSocket.to(socket.gameId).emit('fire-shot', shotData);
+                            },
+                            function(err) {
+                                console.warn('Problem with fire-shot event: ', err);
+                                emitError(socket, 'Error with shot', errorTypes.ERROR);
+                            }
+                        );
+                    }
+                });
             }
         });
         socket.on('setup-ready', function(shipLocations) {
-            console.log('setup finished');
+            console.log('setup finished: ', shipLocations);
             if (checkInGame(socket)) {
                 // TODO handle a player finished setting up their board
-                battleSocket.to(socket.gameId).emit('setup-ready', socket.id);
+                var setupState = {};
+                Utils.getGameData(socket.gameId).exec().then(
+                    function(gameData) {
+                        if (gameData.game.player1 == user._id) {
+                            gameData.game.player1_ready = true;
+                        } else {
+                            gameData.game.player2_ready = true;
+                        }
+                        setupState.player1Ready = gameData.game.player1_ready;
+                        setupState.player2Ready = gameData.game.player2_ready;
+                        return gameData.game.save();
+                    }
+                ).then(
+                    function() {
+                        battleSocket.to(socket.gameId).emit('setup-ready', setupState);
+                    },
+                    function(err) {
+                        console.warn('Problem marking the setup as ready: ', err);
+                        emitError(socket, 'Unable to mark as setup complete', errorTypes.ERROR);
+                    }
+                );
             }
         });
         socket.on('chat-message', function(msg) {
