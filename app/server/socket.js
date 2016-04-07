@@ -208,6 +208,8 @@ module.exports = function(server, sessionHandler) {
                     socket.gameId = gameId;
 
                     gameData.game = game;
+
+                    return Utils.userIdsToNames(gameData.game, ['player1', 'player2'], true);
                 } else {
                     // Attempted to join a game that they are not part of
                     emitError(socket, 'Game already filled', errorTypes.WARNING, true);
@@ -226,22 +228,15 @@ module.exports = function(server, sessionHandler) {
             });
 
             Promise.all([gameFoundPromise, boardFoundPromise, shipFoundPromise]).then(
-                function() {
-                    Utils.userIdsToNames(gameData.game, ['player1', 'player2'], true).then(
-                        function() {
-                            socket.emit('join', gameData);
-                        },
-                        function(err) {
-                            console.warn('Problem getting game information', err);
-                            emitError(socket, 'Problem joining game');
-                        }
-                    );
-                },
+                function() {/* No Op */},
                 function(err) {
                     console.warn('Problem getting game information', err);
                     emitError(socket, 'Problem joining game', errorTypes.ERROR, true);
                 }
-            );
+            ).finally(function() {
+                // Send what game data we have
+                socket.emit('join', gameData);
+            });
         });
         socket.on('disconnect', function() {
             // TODO user left game code
