@@ -189,6 +189,7 @@ module.exports = function(server, sessionHandler) {
     battleSocket.on('connection', function(socket) {
         // Save the user information for easy access
         var user = socket.request.session.user;
+	sendUserInfo(socket);
 
         socket.on('join', function(gameId) {
             //console.log('User ', user._id, ' joined game ', gameId);
@@ -241,66 +242,76 @@ module.exports = function(server, sessionHandler) {
         socket.on('fire-shot', function(shot) {
             console.log('Shot fired: ', socket.gameId);
             if (checkInGame(socket)) {
-                var shotData = {hit: false, coords: shot};
-                battleSocket.to(socket.gameId).emit('fire-shot', shotData);
+                var shotData = {hit: false, coords: shot, player: user._id};
+
                 Utils.getGameData(socket.gameId).then(function(gameData) {
-                    console.log(gameData);
-                    //if (gameData.game.status == 'setup') {
-                    //    emitError(socket, 'Unable to fire shots during setup', errorTypes.NOTICE);
-                    //} else if (gameData.game.status == 'EndGame') {
-                    //    emitError(socket, 'Unable to fire shots during completed game', errorTypes.NOTICE);
-                    //} else {
+                    //console.log(gameData);
+                    if (gameData.game.status == 'setup') {
+                        emitError(socket, 'Unable to fire shots during setup', errorTypes.NOTICE);
+                    } else if (gameData.game.status == 'EndGame') {
+                        emitError(socket, 'Unable to fire shots in a completed game', errorTypes.NOTICE);
+                    } else {
                         var enemyBoard, playerBoard;
-                        if (gameData.game.status == 'PlayerOneTurn') {
-                            enemyBoard = gameData.player2;
-                            playerBoard = gameData.player1;
+                        if (gameData.game.status == 'PlayerOneTurn' && gameData.game.player1 == user._id) {
+                            enemyBoard = gameData.board2;
+                            playerBoard = gameData.board1;
+                            gameData.game.status = 'PlayerTwoTurn';
+                        } else if (gameData.game.player2 == user._id) {
+                            enemyBoard = gameData.board1;
+                            playerBoard = gameData.board2;
+                            gameData.game.status = 'PlayerOneTurn';
                         } else {
-                            enemyBoard = gameData.player1;
-                            playerBoard = gameData.player2;
+                            emitError(socket, 'Not your turn', errorTypes.NOTICE);
+                            return;
                         }
-                        if (enemyBoard[shot].ship == 'none') {
-                            // Miss
-                            enemyBoard[shot].type == 'miss';
-                        } else {
+
+                        if (enemyBoard[shot].isOccupied) {
                             // Hit
-                            enemyBoard[shot].type == 'hit';
+                            playerBoard[shot].type = 'hit';
+                            shotData.hit = true;
+                        } else {
+                            // Miss
+                            playerBoard[shot].type = 'miss';
                         }
-                        enemyBoard.save().then(function() {
-                            battleSocket.to(socket.gameId).emit('fire-shot', shotData);
-                        }, function(err) {
-                            console.warn('Problem saving board: ', err);
-                        });
-                    //}
+                        return Promise.all([playerBoard.save(), gameData.game.save()]).then(
+                            function() {
+                                // Data updated and shot was registered
+                                battleSocket.to(socket.gameId).emit('fire-shot', shotData);
+                            },
+                            function(err) {
+                                console.warn('Problem with fire-shot event: ', err);
+                                emitError(socket, 'Error with shot', errorTypes.ERROR);
+                            }
+                        );
+                    }
                 });
-
-
-                // TODO handle a player firing a shot
-                //battleSocket.to(socket.gameId).emit('fire-shot', shot);
-
-                //// TODO
-                //if ($scope.enemyBoardSchema[cellCoords].ship == "none") {
-                //    //Do miss
-                //    $scope.enemyBoardSchema[cellCoords].type = "miss";
-                //    document.getElementById(id).style.background = "grey";
-                //}
-                //else {
-                //    //Do hit
-                //    $scope.enemyBoardSchema[cellCoords].type = "hit";
-                //    document.getElementById(id).style.background = "red";
-                //}
-                //$scope.endTurn();
-                //
-                //shotData.hit) {
-                //// Do hit
-                //$scope.enemyBoardSchema[shotData.coords
-
             }
         });
         socket.on('setup-ready', function(shipLocations) {
-            console.log('setup finished');
+            console.log('setup finished: ', shipLocations);
             if (checkInGame(socket)) {
                 // TODO handle a player finished setting up their board
-                battleSocket.to(socket.gameId).emit('setup-ready', socket.id);
+                var setupState = {};
+                Utils.getGameData(socket.gameId).exec().then(
+                    function(gameData) {
+                        if (gameData.game.player1 == user._id) {
+                            gameData.game.player1_ready = true;
+                        } else {
+                            gameData.game.player2_ready = true;
+                        }
+                        setupState.player1Ready = gameData.game.player1_ready;
+                        setupState.player2Ready = gameData.game.player2_ready;
+                        return gameData.game.save();
+                    }
+                ).then(
+                    function() {
+                        battleSocket.to(socket.gameId).emit('setup-ready', setupState);
+                    },
+                    function(err) {
+                        console.warn('Problem marking the setup as ready: ', err);
+                        emitError(socket, 'Unable to mark as setup complete', errorTypes.ERROR);
+                    }
+                );
             }
         });
         socket.on('chat-message', function(msg) {
