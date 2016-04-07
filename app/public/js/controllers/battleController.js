@@ -82,10 +82,53 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			//}
 		}
 	}
+	
+	$scope.isCellHit = function(board, cell) {
+		console.log(board);
+		console.log(cell);
+		if(board != "enemy" && board != "own") {
+			return false;
+		}
+		if(board == "enemy" && $scope.enemyBoardSchema[cell].type == "hit" || $scope.enemyBoardSchema[cell].type == "miss") {
+			console.log("HERE1");
+			return true;
+		} else if(board == "own" && $scope.playerBoardSchema[cell].type == "hit" || $scope.enemyBoardSchema[cell].type == "miss") {
+			console.log("HERE2");
+			return true;
+		}
+		console.log("HERE3");
+		return false;
+	}
+
+	$scope.getCellClass = function(board, cell) {
+		if(board != "enemy" && board != "own") {
+			return;
+		}
+		if(board == "enemy" && $scope.enemyBoardSchema[cell]) {
+			if($scope.enemyBoardSchema[cell].type == "hit") {
+				document.getElementById('E' + cell).removeAttribute('style');
+				return "backRed";
+			} else {
+				document.getElementById('E' + cell).removeAttribute('style');
+				return;
+			}
+		} else if(board == "own" && $scope.enemyBoardSchema[cell]) {
+			if($scope.playerBoardSchema[cell].type == "hit") {
+				console.log("HERE2");
+				document.getElementById(cell).removeAttribute('style');
+				return "backRed";
+			} else {
+				document.getElementById(cell).removeAttribute('style');
+				return;
+			}
+		}
+		console.log("HERE3");
+		return;
+	}
 
 	$scope.isPlayersTurn = function() {
 		// TODO
-		return false;
+		return true;
 	}
 
 	$scope.enemyCellHover = function(e) {
@@ -190,7 +233,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		var id = e.target.id;
 		var cellCoords = id.substr(1, 3);
 		if ($scope.enemyBoardSchema[cellCoords].type == "none") {
-			document.getElementById(id).style.background = "white";
+			document.getElementById(id).removeAttribute('style');
 		}
 	}
 
@@ -321,12 +364,12 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			if ($scope.enemyBoardSchema[cellCoords].ship == "none") {
 				//Do miss
 				$scope.enemyBoardSchema[cellCoords].type = "miss";
-				document.getElementById(id).style.background = "grey";
+				//document.getElementById(id).style.background = "grey";
 			}
 			else {
 				//Do hit
 				$scope.enemyBoardSchema[cellCoords].type = "hit";
-				document.getElementById(id).style.background = "red";
+				//document.getElementById(id).style.background = "red";
 			}
 			$scope.endTurn();
 		}
