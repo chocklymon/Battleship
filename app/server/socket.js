@@ -188,6 +188,7 @@ module.exports = function(server, sessionHandler) {
     battleSocket.on('connection', function(socket) {
         // Save the user information for easy access
         var user = socket.request.session.user;
+	sendUserInfo(socket);
 
         socket.on('join', function(gameId) {
             //console.log('User ', user._id, ' joined game ', gameId);
