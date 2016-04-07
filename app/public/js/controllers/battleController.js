@@ -11,11 +11,6 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		// TODO display to the user that we have been disconnected from the server
 		console.log('Disconnected', arguments);
 	});
-	socket.on('user-info', function(userInfo) {
-		console.log(userInfo);
-		console.log(userInfo.username);
-		$scope.localPlayer = userInfo.username;
-	});
 	socket.on('join', function(gameData) {
 		// Server has acknowledged that we joined the game, update the game data with the current data from the server
 		// TODO
@@ -32,9 +27,6 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 				});
 			}
 		}
-		console.log($scope.players);
-		console.log($scope.players[0]);
-		console.log($scope.players[1]);	
 	});
 	socket.on('rejoin', function() {
 		// Rejoin the game, this typically only happens if the server was restarted
@@ -117,7 +109,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		}
 		var id = e.target.id;
 		var cellCoords = id.substr(1, 3);
-		if ($scope.enemyBoardSchema[cellCoords].type == "none" && $scope.isCurrentPlayersTurn()) {
+		if ($scope.enemyBoardSchema[cellCoords].type == "none") {
 			document.getElementById(id).style.background = "green";
 		}
 	}
@@ -184,22 +176,6 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		}
 		return true;
 	}
-
-	$scope.isCurrentPlayersTurn = function() {
-		if ($scope.players.length != 2) {
-			return false;
-		}
-		var currentPlayer;
-		if ($scope.players[0].name == $scope.localPlayer && $scope.gameStatus == "PlayerOneTurn") {
-			return true;
-		}
-		else if ($scope.players[1].name == $scope.localPlayer && $scope.gameStatus == "PlayerTwoTurn") {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}		
 
 	$scope.stringifyCoords = function(cellCoords) {
 		var id = "C";
@@ -351,10 +327,6 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			alert("You cannot fire, the game is over!");
 			return;
 		}
-		if (!$scope.isCurrentPlayersTurn()) {
-			alert("You cannot fire unless it is your turn.");
-			return;
-		}
 		// TODO Check if it is current player's turn to fire
 
 		var id = e.target.id;
@@ -419,7 +391,8 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			$scope.currentShipOrientation = "none";
             
             if ($scope.playerShipSchema.carrier_location != "none" && $scope.playerShipSchema.battleship_location != "none" && $scope.playerShipSchema.cruiser_location != "none" && $scope.playerShipSchema.submarine_location != "none" && $scope.playerShipSchema.destroyer_location != "none"){
-                    socket.emit('setup-ready', ships);
+                var ships = {shipSchema: $scope.playerShipSchema, boardSchema: $scope.playerBoardSchema};  
+                socket.emit('setup-ready', ships);
             }
 		}
 	}
