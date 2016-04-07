@@ -35,11 +35,11 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		}
 		if (gameData.boards) {
 			if (gameData.boards[0].player_id == player.id) {
-				$scope.playerBoardSchema = gameData.boards[0];
-				$scope.enemyBoardSchema = gameData.boards[1];
-			} else {
 				$scope.enemyBoardSchema = gameData.boards[0];
 				$scope.playerBoardSchema = gameData.boards[1];
+			} else {
+				$scope.playerBoardSchema = gameData.boards[0];
+				$scope.enemyBoardSchema = gameData.boards[1];
 			}
 		}
 		if (gameData.shipSchema) {
