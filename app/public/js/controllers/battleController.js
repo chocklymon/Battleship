@@ -1,6 +1,7 @@
 battleship.controller("battleController", function($scope, $routeParams, io) {
 	// Get the unique game ID
 	var gameId = $routeParams.gameId;
+    var localPlayerID;
 
 	// Get the socket and then join the game
 	var socket = io('/battle');
@@ -15,6 +16,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
  		console.log(userInfo);
  		console.log(userInfo.username);
  		$scope.localPlayer = userInfo.username;
+        localPlayerID = userInfo.id;
  	});
 	socket.on('join', function(gameData) {
 		// Server has acknowledged that we joined the game, update the game data with the current data from the server
@@ -40,7 +42,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	socket.on('fire-shot', function(shotData) {
 		console.log(shotData);
         var board;
-        if (shotData.player == me){
+        if (shotData.player == localPlayerID){
             board = $scope.enemyBoardSchema;
         }
         else{
