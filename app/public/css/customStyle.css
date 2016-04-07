@@ -42,6 +42,18 @@
 }
 
 /* Game Board Styles */
+.backGreen {
+	background-color: green;
+}
+.backRed {
+	background-color: red;
+}
+.backGray {
+	background-color: gray;
+}
+td span {
+	color: black;
+}
 .board td, .board th {
     /* Main Board */
     width: 25px;
