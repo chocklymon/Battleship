@@ -36,133 +36,133 @@
     			</tr>
     			<tr>
     				<td>0</td>
-    				<td id="EC00" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC01" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC02" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC03" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC04" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC05" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC06" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC07" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC08" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC09" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
+    				<td id="EC00" ng-class="getCellClass('enemy','C00')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C00')">X</span></td>
+    				<td id="EC01" ng-class="getCellClass('enemy','C01')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C01')">X</span></td>
+    				<td id="EC02" ng-class="getCellClass('enemy','C02')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C02')">X</span></td>
+    				<td id="EC03" ng-class="getCellClass('enemy','C03')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C03')">X</span></td>
+    				<td id="EC04" ng-class="getCellClass('enemy','C04')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C04')">X</span></td>
+    				<td id="EC05" ng-class="getCellClass('enemy','C05')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C05')">X</span></td>
+    				<td id="EC06" ng-class="getCellClass('enemy','C06')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C06')">X</span></td>
+    				<td id="EC07" ng-class="getCellClass('enemy','C07')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C07')">X</span></td>
+    				<td id="EC08" ng-class="getCellClass('enemy','C08')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C08')">X</span></td>
+    				<td id="EC09" ng-class="getCellClass('enemy','C09')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C09')">X</span></td>
     			</tr>
     			<tr>
     				<td>1</td>
-    				<td id="EC10" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC11" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC12" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC13" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC14" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC15" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC16" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC17" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC18" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC19" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
+    				<td id="EC10" ng-class="getCellClass('enemy','C10')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C10')">X</span></td>
+    				<td id="EC11" ng-class="getCellClass('enemy','C11')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C11')">X</span></td>
+    				<td id="EC12" ng-class="getCellClass('enemy','C12')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C12')">X</span></td>
+    				<td id="EC13" ng-class="getCellClass('enemy','C13')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C13')">X</span></td>
+    				<td id="EC14" ng-class="getCellClass('enemy','C14')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C14')">X</span></td>
+    				<td id="EC15" ng-class="getCellClass('enemy','C15')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C15')">X</span></td>
+    				<td id="EC16" ng-class="getCellClass('enemy','C16')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C16')">X</span></td>
+    				<td id="EC17" ng-class="getCellClass('enemy','C17')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C17')">X</span></td>
+    				<td id="EC18" ng-class="getCellClass('enemy','C18')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C18')">X</span></td>
+    				<td id="EC19" ng-class="getCellClass('enemy','C19')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C19')">X</span></td>
     			</tr>
     			<tr>
     				<td>2</td>
-    				<td id="EC20" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC21" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC22" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC23" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC24" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC25" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC26" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC27" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC28" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC29" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
+    				<td id="EC20" ng-class="getCellClass('enemy','C20')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C20')">X</span></td>
+    				<td id="EC21" ng-class="getCellClass('enemy','C21')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C21')">X</span></td>
+    				<td id="EC22" ng-class="getCellClass('enemy','C22')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C22')">X</span></td>
+    				<td id="EC23" ng-class="getCellClass('enemy','C23')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C23')">X</span></td>
+    				<td id="EC24" ng-class="getCellClass('enemy','C24')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C24')">X</span></td>
+    				<td id="EC25" ng-class="getCellClass('enemy','C25')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C25')">X</span></td>
+    				<td id="EC26" ng-class="getCellClass('enemy','C26')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C26')">X</span></td>
+    				<td id="EC27" ng-class="getCellClass('enemy','C27')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C27')">X</span></td>
+    				<td id="EC28" ng-class="getCellClass('enemy','C28')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C28')">X</span></td>
+    				<td id="EC29" ng-class="getCellClass('enemy','C29')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C29')">X</span></td>
     			</tr>
     			<tr>
     				<td>3</td>
-    				<td id="EC30" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC31" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC32" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC33" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC34" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC35" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC36" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC37" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC38" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC39" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
+    				<td id="EC30" ng-class="getCellClass('enemy','C30')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C30')">X</span></td>
+    				<td id="EC31" ng-class="getCellClass('enemy','C31')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C31')">X</span></td>
+    				<td id="EC32" ng-class="getCellClass('enemy','C32')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C32')">X</span></td>
+    				<td id="EC33" ng-class="getCellClass('enemy','C33')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C33')">X</span></td>
+    				<td id="EC34" ng-class="getCellClass('enemy','C34')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C34')">X</span></td>
+    				<td id="EC35" ng-class="getCellClass('enemy','C35')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C35')">X</span></td>
+    				<td id="EC36" ng-class="getCellClass('enemy','C36')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C36')">X</span></td>
+    				<td id="EC37" ng-class="getCellClass('enemy','C37')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C37')">X</span></td>
+    				<td id="EC38" ng-class="getCellClass('enemy','C38')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C38')">X</span></td>
+    				<td id="EC39" ng-class="getCellClass('enemy','C39')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C39')">X</span></td>
     			</tr>
     			<tr>
     				<td>4</td>
-    				<td id="EC40" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC41" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC42" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC43" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC44" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC45" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC46" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC47" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC48" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC49" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
+    				<td id="EC40" ng-class="getCellClass('enemy','C40')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C40')">X</span></td>
+    				<td id="EC41" ng-class="getCellClass('enemy','C41')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C41')">X</span></td>
+    				<td id="EC42" ng-class="getCellClass('enemy','C42')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C42')">X</span></td>
+    				<td id="EC43" ng-class="getCellClass('enemy','C43')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C43')">X</span></td>
+    				<td id="EC44" ng-class="getCellClass('enemy','C44')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C44')">X</span></td>
+    				<td id="EC45" ng-class="getCellClass('enemy','C45')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C45')">X</span></td>
+    				<td id="EC46" ng-class="getCellClass('enemy','C46')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C46')">X</span></td>
+    				<td id="EC47" ng-class="getCellClass('enemy','C47')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C47')">X</span></td>
+    				<td id="EC48" ng-class="getCellClass('enemy','C48')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C48')">X</span></td>
+    				<td id="EC49" ng-class="getCellClass('enemy','C49')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C49')">X</span></td>
     			</tr>
     			<tr>
     				<td>5</td>
-    				<td id="EC50" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC51" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC52" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC53" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC54" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC55" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC56" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC57" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC58" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC59" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
+    				<td id="EC50" ng-class="getCellClass('enemy','C50')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C50')">X</span></td>
+    				<td id="EC51" ng-class="getCellClass('enemy','C51')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C51')">X</span></td>
+    				<td id="EC52" ng-class="getCellClass('enemy','C52')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C52')">X</span></td>
+    				<td id="EC53" ng-class="getCellClass('enemy','C53')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C53')">X</span></td>
+    				<td id="EC54" ng-class="getCellClass('enemy','C54')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C54')">X</span></td>
+    				<td id="EC55" ng-class="getCellClass('enemy','C55')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C55')">X</span></td>
+    				<td id="EC56" ng-class="getCellClass('enemy','C56')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C56')">X</span></td>
+    				<td id="EC57" ng-class="getCellClass('enemy','C57')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C57')">X</span></td>
+    				<td id="EC58" ng-class="getCellClass('enemy','C58')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C58')">X</span></td>
+    				<td id="EC59" ng-class="getCellClass('enemy','C59')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C59')">X</span></td>
     			</tr>
     			<tr>
     				<td>6</td>
-    				<td id="EC60" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC61" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC62" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC63" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC64" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC65" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC66" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC67" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC68" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC69" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
+    				<td id="EC60" ng-class="getCellClass('enemy','C60')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C60')">X</span></td>
+    				<td id="EC61" ng-class="getCellClass('enemy','C61')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C61')">X</span></td>
+    				<td id="EC62" ng-class="getCellClass('enemy','C62')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C62')">X</span></td>
+    				<td id="EC63" ng-class="getCellClass('enemy','C63')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C63')">X</span></td>
+    				<td id="EC64" ng-class="getCellClass('enemy','C64')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C64')">X</span></td>
+    				<td id="EC65" ng-class="getCellClass('enemy','C65')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C65')">X</span></td>
+    				<td id="EC66" ng-class="getCellClass('enemy','C66')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C66')">X</span></td>
+    				<td id="EC67" ng-class="getCellClass('enemy','C67')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C67')">X</span></td>
+    				<td id="EC68" ng-class="getCellClass('enemy','C68')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C68')">X</span></td>
+    				<td id="EC69" ng-class="getCellClass('enemy','C69')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C69')">X</span></td>
     			</tr>
     			<tr>
     				<td>7</td>
-    				<td id="EC70" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC71" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC72" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC73" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC74" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC75" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC76" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC77" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC78" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC79" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
+    				<td id="EC70" ng-class="getCellClass('enemy','C70')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C70')">X</span></td>
+    				<td id="EC71" ng-class="getCellClass('enemy','C71')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C71')">X</span></td>
+    				<td id="EC72" ng-class="getCellClass('enemy','C72')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C72')">X</span></td>
+    				<td id="EC73" ng-class="getCellClass('enemy','C73')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C73')">X</span></td>
+    				<td id="EC74" ng-class="getCellClass('enemy','C74')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C74')">X</span></td>
+    				<td id="EC75" ng-class="getCellClass('enemy','C75')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C75')">X</span></td>
+    				<td id="EC76" ng-class="getCellClass('enemy','C76')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C76')">X</span></td>
+    				<td id="EC77" ng-class="getCellClass('enemy','C77')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C77')">X</span></td>
+    				<td id="EC78" ng-class="getCellClass('enemy','C78')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C78')">X</span></td>
+    				<td id="EC79" ng-class="getCellClass('enemy','C79')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C79')">X</span></td>
     			</tr>
     			<tr>
     				<td>8</td>
-    				<td id="EC80" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC81" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC82" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC83" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC84" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC85" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC86" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC87" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC88" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC89" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
+    				<td id="EC80" ng-class="getCellClass('enemy','C80')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C80')">X</span></td>
+    				<td id="EC81" ng-class="getCellClass('enemy','C81')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C81')">X</span></td>
+    				<td id="EC82" ng-class="getCellClass('enemy','C82')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C82')">X</span></td>
+    				<td id="EC83" ng-class="getCellClass('enemy','C83')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C83')">X</span></td>
+    				<td id="EC84" ng-class="getCellClass('enemy','C84')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C84')">X</span></td>
+    				<td id="EC85" ng-class="getCellClass('enemy','C85')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C85')">X</span></td>
+    				<td id="EC86" ng-class="getCellClass('enemy','C86')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C86')">X</span></td>
+    				<td id="EC87" ng-class="getCellClass('enemy','C87')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C87')">X</span></td>
+    				<td id="EC88" ng-class="getCellClass('enemy','C88')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C88')">X</span></td>
+    				<td id="EC89" ng-class="getCellClass('enemy','C89')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C89')">X</span></td>
     			</tr>
     			<tr>
     				<td>9</td>
-    				<td id="EC90" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC91" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC92" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC93" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC94" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC95" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC96" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC97" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC98" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
-    				<td id="EC99" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"></td>
+    				<td id="EC90" ng-class="getCellClass('enemy','C90')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C90')">X</span></td>
+    				<td id="EC91" ng-class="getCellClass('enemy','C91')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C91')">X</span></td>
+    				<td id="EC92" ng-class="getCellClass('enemy','C92')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C92')">X</span></td>
+    				<td id="EC93" ng-class="getCellClass('enemy','C93')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C93')">X</span></td>
+    				<td id="EC94" ng-class="getCellClass('enemy','C94')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C94')">X</span></td>
+    				<td id="EC95" ng-class="getCellClass('enemy','C95')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C95')">X</span></td>
+    				<td id="EC96" ng-class="getCellClass('enemy','C96')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C96')">X</span></td>
+    				<td id="EC97" ng-class="getCellClass('enemy','C97')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C97')">X</span></td>
+    				<td id="EC98" ng-class="getCellClass('enemy','C98')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C98')">X</span></td>
+    				<td id="EC99" ng-class="getCellClass('enemy','C99')" ng-click="fireOnCell($event)" ng-mouseleave="enemyCellLeave($event)" ng-mousemove="enemyCellHover($event)"><span ng-if="isCellHit('enemy','C99')">X</span></td>
     			</tr>
     		</table>
     	</div>
