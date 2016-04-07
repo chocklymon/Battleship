@@ -34,13 +34,21 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	});
 	socket.on('fire-shot', function(shotData) {
 		console.log(shotData);
+        var board;
+        if (shotData.player == me){
+            board = $scope.enemyBoardSchema;
+        }
+        else{
+            board = $scope.playerBoardSchema;
+        }
+        
 		if (shotData.hit) {
 			// Do hit
-			$scope.enemyBoardSchema[shotData.coords].type = "hit";
+			board[shotData.coords].type = "hit";
 			document.getElementById('E' + shotData.coords).style.background = "red";
 		} else {
 			// Do miss
-			$scope.enemyBoardSchema[shotData.coords].type = "miss";
+			board[shotData.coords].type = "miss";
 			document.getElementById('E' + shotData.coords).style.background = "grey";
 		}
 
