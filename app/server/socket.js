@@ -213,14 +213,19 @@ module.exports = function(server, sessionHandler) {
                     emitError(socket, 'Game already filled', errorTypes.WARNING, true);
                 }
             });
-            var boardFoundPromise = Board.findOne({
-                game_id: gameId,
+            var boardFoundPromise = Board.find({
+                game_id: gameId
+            }).exec().then(function(boards) {
+                gameData.boards = boards;
+            });
+            var shipFoundPromise = Ship.findOne({
+                game_id: socket.gameId,
                 player_id: user._id
-            }).exec().then(function(board) {
-                gameData.board = board;
+            }).exec().then(function(ship) {
+                gameData.shipSchema = ship;
             });
 
-            Promise.all([gameFoundPromise, boardFoundPromise]).then(
+            Promise.all([gameFoundPromise, boardFoundPromise, shipFoundPromise]).then(
                 function() {
                     Utils.userIdsToNames(gameData.game, ['player1', 'player2'], true).then(
                         function() {
