@@ -21,6 +21,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		// TODO
 		console.log("Join Data: ", gameData);
 		if (gameData.game) {
+			$scope.gameSchema = gameData.game;
 			$scope.players = [{
 				name: gameData.game.player1,
 				status: 'Unknown'
@@ -31,6 +32,18 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 					status: 'Unknown'
 				});
 			}
+		}
+		if (gameData.boards) {
+			if (gameData.boards[0].player_id == player.id) {
+				$scope.playerBoardSchema = gameData.boards[0];
+				$scope.enemyBoardSchema = gameData.boards[1];
+			} else {
+				$scope.enemyBoardSchema = gameData.boards[0];
+				$scope.playerBoardSchema = gameData.boards[1];
+			}
+		}
+		if (gameData.shipSchema) {
+			$scope.playerShipSchema = gameData.shipSchema;
 		}
 	});
 	socket.on('rejoin', function() {
@@ -169,10 +182,12 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			return; // We only allow fire investigation if it is the players turn
 		}
 		var id = e.target.id;
-		var cellCoords = id.substr(1, 3);
-		if ($scope.enemyBoardSchema[cellCoords].type == "none" && $scope.isCurrentPlayersTurn()) {
-			document.getElementById(id).style.background = "green";
-		}
+        if (id) {
+            var cellCoords = id.substr(1, 3);
+            if ($scope.enemyBoardSchema[cellCoords].type == "none" && $scope.isCurrentPlayersTurn()) {
+                document.getElementById(id).style.background = "green";
+            }
+        }
 	};
 
 	$scope.populateArray = function(cellCoords) {
@@ -278,10 +293,12 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	$scope.enemyCellLeave = function(e) {
 		// TODO
 		var id = e.target.id;
-		var cellCoords = id.substr(1, 3);
-		if ($scope.enemyBoardSchema[cellCoords].type == "none") {
-			document.getElementById(id).removeAttribute('style');
-		}
+        if (id) {
+            var cellCoords = id.substr(1, 3);
+            if ($scope.enemyBoardSchema[cellCoords].type == "none") {
+                document.getElementById(id).removeAttribute('style');
+            }
+        }
 	};
 
 	$scope.selectShip = function(shipName) {
@@ -477,6 +494,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		}
 	};
 
+	// Initalize the boards and schema
 	$scope.playerShipSchema = {
 	    battleship_orientation: "none",
 	    battleship_location: "none",
@@ -593,108 +611,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	    C99: {type: 'none', isOccupied: false, ship: 'none'}
 	};
 
-	$scope.enemyBoardSchema = {
-	    C00: {type: 'none', isOccupied: false, ship: 'Destroyer'},
-	    C01: {type: 'none', isOccupied: false, ship: 'Destroyer'},
-	    C02: {type: 'none', isOccupied: false, ship: 'none'},
-	    C03: {type: 'none', isOccupied: false, ship: 'Battleship'},
-	    C04: {type: 'none', isOccupied: false, ship: 'Battleship'},
-	    C05: {type: 'none', isOccupied: false, ship: 'Battleship'},
-	    C06: {type: 'none', isOccupied: false, ship: 'Battleship'},
-	    C07: {type: 'none', isOccupied: false, ship: 'none'},
-	    C08: {type: 'none', isOccupied: false, ship: 'none'},
-	    C09: {type: 'none', isOccupied: false, ship: 'none'},
-	    C10: {type: 'none', isOccupied: false, ship: 'none'},
-	    C11: {type: 'none', isOccupied: false, ship: 'none'},
-	    C12: {type: 'none', isOccupied: false, ship: 'none'},
-	    C13: {type: 'none', isOccupied: false, ship: 'none'},
-	    C14: {type: 'none', isOccupied: false, ship: 'none'},
-	    C15: {type: 'none', isOccupied: false, ship: 'none'},
-	    C16: {type: 'none', isOccupied: false, ship: 'none'},
-	    C17: {type: 'none', isOccupied: false, ship: 'none'},
-	    C18: {type: 'none', isOccupied: false, ship: 'none'},
-	    C19: {type: 'none', isOccupied: false, ship: 'none'},
-	    C20: {type: 'none', isOccupied: false, ship: 'none'},
-	    C21: {type: 'none', isOccupied: false, ship: 'none'},
-	    C22: {type: 'none', isOccupied: false, ship: 'none'},
-	    C23: {type: 'none', isOccupied: false, ship: 'none'},
-	    C24: {type: 'none', isOccupied: false, ship: 'none'},
-	    C25: {type: 'none', isOccupied: false, ship: 'none'},
-	    C26: {type: 'none', isOccupied: false, ship: 'none'},
-	    C27: {type: 'none', isOccupied: false, ship: 'none'},
-	    C28: {type: 'none', isOccupied: false, ship: 'none'},
-	    C29: {type: 'none', isOccupied: false, ship: 'none'},
-	    C30: {type: 'none', isOccupied: false, ship: 'none'},
-	    C31: {type: 'none', isOccupied: false, ship: 'none'},
-	    C32: {type: 'none', isOccupied: false, ship: 'none'},
-	    C33: {type: 'none', isOccupied: false, ship: 'none'},
-	    C34: {type: 'none', isOccupied: false, ship: 'none'},
-	    C35: {type: 'none', isOccupied: false, ship: 'none'},
-	    C36: {type: 'none', isOccupied: false, ship: 'none'},
-	    C37: {type: 'none', isOccupied: false, ship: 'none'},
-	    C38: {type: 'none', isOccupied: false, ship: 'none'},
-	    C39: {type: 'none', isOccupied: false, ship: 'none'},
-	    C40: {type: 'none', isOccupied: false, ship: 'none'},
-	    C41: {type: 'none', isOccupied: false, ship: 'none'},
-	    C42: {type: 'none', isOccupied: false, ship: 'none'},
-	    C43: {type: 'none', isOccupied: false, ship: 'none'},
-	    C44: {type: 'none', isOccupied: false, ship: 'none'},
-	    C45: {type: 'none', isOccupied: false, ship: 'none'},
-	    C46: {type: 'none', isOccupied: false, ship: 'none'},
-	    C47: {type: 'none', isOccupied: false, ship: 'none'},
-	    C48: {type: 'none', isOccupied: false, ship: 'none'},
-	    C49: {type: 'none', isOccupied: false, ship: 'none'},
-	    C50: {type: 'none', isOccupied: false, ship: 'none'},
-	    C51: {type: 'none', isOccupied: false, ship: 'none'},
-	    C52: {type: 'none', isOccupied: false, ship: 'none'},
-	    C53: {type: 'none', isOccupied: false, ship: 'none'},
-	    C54: {type: 'none', isOccupied: false, ship: 'none'},
-	    C55: {type: 'none', isOccupied: false, ship: 'none'},
-	    C56: {type: 'none', isOccupied: false, ship: 'none'},
-	    C57: {type: 'none', isOccupied: false, ship: 'none'},
-	    C58: {type: 'none', isOccupied: false, ship: 'none'},
-	    C59: {type: 'none', isOccupied: false, ship: 'none'},
-	    C60: {type: 'none', isOccupied: false, ship: 'none'},
-	    C61: {type: 'none', isOccupied: false, ship: 'none'},
-	    C62: {type: 'none', isOccupied: false, ship: 'none'},
-	    C63: {type: 'none', isOccupied: false, ship: 'none'},
-	    C64: {type: 'none', isOccupied: false, ship: 'none'},
-	    C65: {type: 'none', isOccupied: false, ship: 'none'},
-	    C66: {type: 'none', isOccupied: false, ship: 'none'},
-	    C67: {type: 'none', isOccupied: false, ship: 'none'},
-	    C68: {type: 'none', isOccupied: false, ship: 'none'},
-	    C69: {type: 'none', isOccupied: false, ship: 'none'},
-	    C70: {type: 'none', isOccupied: false, ship: 'none'},
-	    C71: {type: 'none', isOccupied: false, ship: 'none'},
-	    C72: {type: 'none', isOccupied: false, ship: 'none'},
-	    C73: {type: 'none', isOccupied: false, ship: 'none'},
-	    C74: {type: 'none', isOccupied: false, ship: 'none'},
-	    C75: {type: 'none', isOccupied: false, ship: 'none'},
-	    C76: {type: 'none', isOccupied: false, ship: 'none'},
-	    C77: {type: 'none', isOccupied: false, ship: 'none'},
-	    C78: {type: 'none', isOccupied: false, ship: 'none'},
-	    C79: {type: 'none', isOccupied: false, ship: 'none'},
-	    C80: {type: 'none', isOccupied: false, ship: 'none'},
-	    C81: {type: 'none', isOccupied: false, ship: 'none'},
-	    C82: {type: 'none', isOccupied: false, ship: 'none'},
-	    C83: {type: 'none', isOccupied: false, ship: 'none'},
-	    C84: {type: 'none', isOccupied: false, ship: 'none'},
-	    C85: {type: 'none', isOccupied: false, ship: 'none'},
-	    C86: {type: 'none', isOccupied: false, ship: 'none'},
-	    C87: {type: 'none', isOccupied: false, ship: 'none'},
-	    C88: {type: 'none', isOccupied: false, ship: 'none'},
-	    C89: {type: 'none', isOccupied: false, ship: 'none'},
-	    C90: {type: 'none', isOccupied: false, ship: 'none'},
-	    C91: {type: 'none', isOccupied: false, ship: 'none'},
-	    C92: {type: 'none', isOccupied: false, ship: 'none'},
-	    C93: {type: 'none', isOccupied: false, ship: 'none'},
-	    C94: {type: 'none', isOccupied: false, ship: 'none'},
-	    C95: {type: 'none', isOccupied: false, ship: 'none'},
-	    C96: {type: 'none', isOccupied: false, ship: 'none'},
-	    C97: {type: 'none', isOccupied: false, ship: 'none'},
-	    C98: {type: 'none', isOccupied: false, ship: 'none'},
-	    C99: {type: 'none', isOccupied: false, ship: 'none'}
-	};
+	$scope.enemyBoardSchema = angular.copy($scope.playerBoardSchema);
 
 
 	$scope.gameSchema = {
