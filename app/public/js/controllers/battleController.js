@@ -79,20 +79,20 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		if ($scope.gameStatus == "Setup" && $scope.currentSelectedShip != "none") {
 			$scope.test = "color: blue";
 			//console.dir(e);
-			var id = e.target.id;
+			var id = e.target.id, i;
 			var cellCoords = id.substr(1, 2);
 			cellCoords = parseInt(cellCoords);
 			//console.log("_____" + cellCoords);
 			$scope.populateArray(cellCoords);
 			//console.log("_____" + cellCoords);
 			if ($scope.canPlaceShip(cellCoords)) {
-				for(var i = 0; i < $scope.selectedCells.length; i++) {
-					var id = $scope.stringifyCoords($scope.selectedCells[i]);
+				for(i = 0; i < $scope.selectedCells.length; i++) {
+					id = $scope.stringifyCoords($scope.selectedCells[i]);
 					document.getElementById(id).style.background = "green";
 				}
 			} else {
-				for(var i = 0; i < $scope.selectedCells.length; i++) {
-					var id = $scope.stringifyCoords($scope.selectedCells[i]);
+				for(i = 0; i < $scope.selectedCells.length; i++) {
+					id = $scope.stringifyCoords($scope.selectedCells[i]);
 					if($scope.currentShipOrientation == "Left" && ($scope.selectedCells[i] % 10) - ($scope.selectedCells[0] % 10) <= 0 && $scope.selectedCells[i] >= 0) {
 						document.getElementById(id).style.background = "red";
 					}
@@ -114,24 +114,24 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			//e.target.style.background = "green";
 			//}
 		}
-	}
+	};
 	
 	$scope.isCellHit = function(board, cell) {
-		console.log(board);
-		console.log(cell);
+		//console.log(board);
+		//console.log(cell);
 		if(board != "enemy" && board != "own") {
 			return false;
 		}
 		if(board == "enemy" && $scope.enemyBoardSchema[cell].type == "hit" || $scope.enemyBoardSchema[cell].type == "miss") {
-			console.log("HERE1");
+			//console.log("HERE1");
 			return true;
 		} else if(board == "own" && $scope.playerBoardSchema[cell].type == "hit" || $scope.enemyBoardSchema[cell].type == "miss") {
-			console.log("HERE2");
+			//console.log("HERE2");
 			return true;
 		}
-		console.log("HERE3");
+		//console.log("HERE3");
 		return false;
-	}
+	};
 
 	$scope.getCellClass = function(board, cell) {
 		if(board != "enemy" && board != "own") {
@@ -147,7 +147,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			}
 		} else if(board == "own" && $scope.enemyBoardSchema[cell]) {
 			if($scope.playerBoardSchema[cell].type == "hit") {
-				console.log("HERE2");
+				//console.log("HERE2");
 				document.getElementById(cell).removeAttribute('style');
 				return "backRed";
 			} else {
@@ -155,14 +155,14 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 				return;
 			}
 		}
-		console.log("HERE3");
+		//console.log("HERE3");
 		return;
-	}
+	};
 
 	$scope.isPlayersTurn = function() {
 		// TODO
 		return true;
-	}
+	};
 
 	$scope.enemyCellHover = function(e) {
 		// TODO
@@ -174,7 +174,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		if ($scope.enemyBoardSchema[cellCoords].type == "none" && $scope.isCurrentPlayersTurn()) {
 			document.getElementById(id).style.background = "green";
 		}
-	}
+	};
 
 	$scope.populateArray = function(cellCoords) {
 		$scope.selectedCells = [];
@@ -200,7 +200,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			}
 		}
 		//console.log($scope.selectedCells);
-	}
+	};
 
 	$scope.canPlaceShip = function() {
 		for(var i = 0; i < $scope.currentShipLength; i++) {
@@ -237,7 +237,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			}
 		}
 		return true;
-	}
+	};
 
 	$scope.isCurrentPlayersTurn = function() {
  		if ($scope.players.length != 2) {
@@ -253,14 +253,14 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
  		else {
  			return false;
  		}
- 	}
+ 	};
 
 	$scope.stringifyCoords = function(cellCoords) {
 		var id = "C";
 		if (cellCoords < 10) id += "0" + cellCoords;
 		if (cellCoords >= 10) id += cellCoords;
 		return id;
-	}
+	};
 
 	$scope.cellLeave = function(e) {
 		if ($scope.gameStatus == "Setup" && $scope.currentSelectedShip != "none") {
@@ -275,7 +275,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 				}
 			}
 		}		
-	}
+	};
 
 	$scope.enemyCellLeave = function(e) {
 		// TODO
@@ -284,7 +284,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		if ($scope.enemyBoardSchema[cellCoords].type == "none") {
 			document.getElementById(id).removeAttribute('style');
 		}
-	}
+	};
 
 	$scope.selectShip = function(shipName) {
 		// Don't do anything if it isn't the setup phase
@@ -352,7 +352,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 				$scope.currentShipLength = 2;
 				break;
 		}
-	}
+	};
 	$scope.changeOrientation = function() {
 		switch($scope.currentShipOrientation) {
 			case "Down" : 
@@ -368,7 +368,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 				$scope.currentShipOrientation = "Down";
 				break;
 		}
-	}
+	};
 
 	$scope.changeStateDebug = function() {
 		switch($scope.gameStatus) {
@@ -385,7 +385,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 				$scope.gameStatus = "Setup";
 				break;
 		}
-	}
+	};
 
 	$scope.endTurn = function() {
 		if ($scope.gameStatus == "PlayerOneTurn") {
@@ -394,7 +394,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		else if ($scope.gameStatus == "PlayerTwoTurn") {
 			$scope.gameStatus = "PlayerOneTurn";
 		}
-	}
+	};
 
 	$scope.fireOnCell = function(e) {
 		if ($scope.gameStatus == "Setup") {
@@ -422,7 +422,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		else {
 			alert("You have already fired on this location!");
 		}
-	}
+	};
 
 	$scope.placeShip = function(e) {
 		if ($scope.gameStatus == "Setup" && $scope.canPlaceShip()) {
@@ -460,8 +460,8 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 				// Default to error dialog pop-up
 			}
 
-			console.log($scope.playerShipSchema);
-			console.log($scope.selectedCells);
+			//console.log($scope.playerShipSchema);
+			//console.log($scope.selectedCells);
 			for (var i = 0; i < $scope.selectedCells.length; i++) {
 				$scope.playerBoardSchema[$scope.stringifyCoords($scope.selectedCells[i])].isOccupied = true;
 				//console.log($scope.playerBoardSchema[$scope.stringifyCoords($scope.selectedCells[i])].isOccupied);
@@ -477,7 +477,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
                 socket.emit('setup-ready', ships);
             }
 		}
-	}
+	};
 
 	$scope.playerShipSchema = {
 	    battleship_orientation: "none",
@@ -490,7 +490,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	    submarine_location: "none",
 	    destroyer_orientation: "none",
 	    destroyer_location: "none"
-	}
+	};
 
 	$scope.playerBoardSchema = {
 	    C00: {type: 'none', isOccupied: false, ship: 'none'},
@@ -593,7 +593,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	    C97: {type: 'none', isOccupied: false, ship: 'none'},
 	    C98: {type: 'none', isOccupied: false, ship: 'none'},
 	    C99: {type: 'none', isOccupied: false, ship: 'none'}
-	}
+	};
 
 	$scope.enemyBoardSchema = {
 	    C00: {type: 'none', isOccupied: false, ship: 'Destroyer'},
@@ -696,7 +696,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	    C97: {type: 'none', isOccupied: false, ship: 'none'},
 	    C98: {type: 'none', isOccupied: false, ship: 'none'},
 	    C99: {type: 'none', isOccupied: false, ship: 'none'}
-	}
+	};
 
 
 	$scope.gameSchema = {
