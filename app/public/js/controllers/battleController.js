@@ -45,11 +45,11 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		if (shotData.hit) {
 			// Do hit
 			board[shotData.coords].type = "hit";
-			document.getElementById('E' + shotData.coords).style.background = "red";
+			//document.getElementById('E' + shotData.coords).style.background = "red";
 		} else {
 			// Do miss
 			board[shotData.coords].type = "miss";
-			document.getElementById('E' + shotData.coords).style.background = "grey";
+			//document.getElementById('E' + shotData.coords).style.background = "grey";
 		}
 
 		$scope.endTurn();
