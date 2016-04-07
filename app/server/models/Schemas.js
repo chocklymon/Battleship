@@ -14,15 +14,15 @@ var GameSchema = new mongoose.Schema({
 var ShipSchema = new mongoose.Schema({
     game_id: String,
     player_id: String,
-    battleship_position: String, //number ex. 01, 35, 99, etc
+    battleship_orientation: String, //number ex. 01, 35, 99, etc
     battleship_location: String, //up, down, left, right
-    carrier_position: String,
+    carrier_orientation: String,
     carrier_location: String,
-    cruiser_position: String,
+    cruiser_orientation: String,
     cruiser_location: String,
-    submarine_position: String,
+    submarine_orientation: String,
     submarine_location: String,
-    destroyer_position: String,
+    destroyer_orientation: String,
     destroyer_location: String
 });
 
