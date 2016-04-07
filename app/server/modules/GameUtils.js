@@ -118,17 +118,13 @@ var getGameData = function(gameId) {
     return Board.find({
         game_id: gameId
     }).exec().then(function(boards) {
+        //console.log(boards);
+        if (boards.length != 2) {
+            // Missing boards
+            throw 'Missing boards';
+        }
         return Game.findById(gameId).exec().then(function(game) {
-            if (boards.length == 0) {
-                // Create the boards
-                var board1 = new Board({game_id: game._id, player_id: game.player1});
-                var board2 = new Board({game_id: game._id, player_id: game.player2});
-                return Promise.all([board1.save(), board2.save()]).then(function(board1, board2) {
-                    return {board1: board1, board2: board2, game: game};
-                });
-            } else {
-                return {board1: boards[0], board2: boards[1], game: game};
-            }
+            return {board1: boards[0], board2: boards[1], game: game};
         });
     });
 };

@@ -294,7 +294,7 @@ module.exports = function(server, sessionHandler) {
             }
         });
         socket.on('setup-ready', function(setupInfo) {
-            console.log('Setup finished: ', setupInfo);
+            //console.log('Setup finished: ', setupInfo);
             if (checkInGame(socket)) {
                 var setupState = {gameStatus: 'Setup'};
 
@@ -306,7 +306,7 @@ module.exports = function(server, sessionHandler) {
                 var board = new Board(setupInfo.boardSchema);
                 board.game_id = socket.gameId;
                 board.player_id = user._id;
-                var boardPromise = ships.save();
+                var boardPromise = board.save();
 
                 var gamePromise = Game.findById(socket.gameId).exec().then(
                     function(game) {
