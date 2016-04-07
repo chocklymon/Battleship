@@ -293,23 +293,42 @@ module.exports = function(server, sessionHandler) {
                 });
             }
         });
-        socket.on('setup-ready', function(shipLocations) {
-            console.log('setup finished: ', shipLocations);
+        socket.on('setup-ready', function(setupInfo) {
+            console.log('Setup finished: ', setupInfo);
             if (checkInGame(socket)) {
-                // TODO handle a player finished setting up their board
-                var setupState = {};
-                Utils.getGameData(socket.gameId).exec().then(
-                    function(gameData) {
-                        if (gameData.game.player1 == user._id) {
-                            gameData.game.player1_ready = true;
+                var setupState = {gameStatus: 'Setup'};
+
+                // Save the board and ships
+                var ships = new Ship(setupInfo.shipSchema);
+                ships.player_id = user._id;
+                var shipsPromise = ships.save();
+
+                var board = new Board(setupInfo.boardSchema);
+                board.game_id = socket.gameId;
+                board.player_id = user._id;
+                var boardPromise = ships.save();
+
+                var gamePromise = Game.findById(socket.gameId).exec().then(
+                    function(game) {
+                        if (game.player1 == user._id) {
+                            game.player1_ready = true;
                         } else {
-                            gameData.game.player2_ready = true;
+                            game.player2_ready = true;
                         }
-                        setupState.player1Ready = gameData.game.player1_ready;
-                        setupState.player2Ready = gameData.game.player2_ready;
-                        return gameData.game.save();
+                        setupState.player1Ready = game.player1_ready;
+                        setupState.player2Ready = game.player2_ready;
+
+                        if (game.player1_ready && game.player2_ready) {
+                            // Both players are ready
+                            game.status = 'PlayerOneTurn';
+                            setupState.gameStatus = 'PlayerOneTurn';
+                        }
+
+                        return game.save();
                     }
-                ).then(
+                );
+
+                Promise.all([shipsPromise, boardPromise, gamePromise]).then(
                     function() {
                         battleSocket.to(socket.gameId).emit('setup-ready', setupState);
                     },
