@@ -32,6 +32,20 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		// Rejoin the game, this typically only happens if the server was restarted
 		socket.emit('join', gameId)
 	});
+	socket.on('fire-shot', function(shotData) {
+		console.log(shotData);
+		if (shotData.hit) {
+			// Do hit
+			$scope.enemyBoardSchema[shotData.coords].type = "hit";
+			document.getElementById('E' + shotData.coords).style.background = "red";
+		} else {
+			// Do miss
+			$scope.enemyBoardSchema[shotData.coords].type = "miss";
+			document.getElementById('E' + shotData.coords).style.background = "grey";
+		}
+
+		$scope.endTurn();
+	});
 
 	$scope.test = "color: red";
 	$scope.gameStatus = "Setup";
@@ -317,18 +331,11 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 
 		var id = e.target.id;
 		var cellCoords = id.substr(1, 3);
+
+
+
 		if ($scope.enemyBoardSchema[cellCoords].type == "none") {
-			if ($scope.enemyBoardSchema[cellCoords].ship == "none") {
-				//Do miss
-				$scope.enemyBoardSchema[cellCoords].type = "miss";
-				document.getElementById(id).style.background = "grey";
-			}
-			else {
-				//Do hit
-				$scope.enemyBoardSchema[cellCoords].type = "hit";
-				document.getElementById(id).style.background = "red";
-			}
-			$scope.endTurn();
+			socket.emit('fire-shot', cellCoords);
 		}
 		else {
 			alert("You have already fired on this location!");

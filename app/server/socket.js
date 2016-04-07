@@ -33,7 +33,8 @@ module.exports = function(server, sessionHandler) {
     // Functions //
     var errorTypes = {
         WARNING: 'warning',
-        ERROR: 'error'
+        ERROR: 'error',
+        NOTICE: 'notice'
     };
 
     var emitError = function(socket, errorMsg, type, redirect, sendTo) {
@@ -238,10 +239,61 @@ module.exports = function(server, sessionHandler) {
 
         // Room (game) specific events
         socket.on('fire-shot', function(shot) {
-            console.log('Shot fired');
+            console.log('Shot fired: ', socket.gameId);
             if (checkInGame(socket)) {
+                var shotData = {hit: false, coords: shot};
+                battleSocket.to(socket.gameId).emit('fire-shot', shotData);
+                Utils.getGameData(socket.gameId).then(function(gameData) {
+                    console.log(gameData);
+                    //if (gameData.game.status == 'setup') {
+                    //    emitError(socket, 'Unable to fire shots during setup', errorTypes.NOTICE);
+                    //} else if (gameData.game.status == 'EndGame') {
+                    //    emitError(socket, 'Unable to fire shots during completed game', errorTypes.NOTICE);
+                    //} else {
+                        var enemyBoard, playerBoard;
+                        if (gameData.game.status == 'PlayerOneTurn') {
+                            enemyBoard = gameData.player2;
+                            playerBoard = gameData.player1;
+                        } else {
+                            enemyBoard = gameData.player1;
+                            playerBoard = gameData.player2;
+                        }
+                        if (enemyBoard[shot].ship == 'none') {
+                            // Miss
+                            enemyBoard[shot].type == 'miss';
+                        } else {
+                            // Hit
+                            enemyBoard[shot].type == 'hit';
+                        }
+                        enemyBoard.save().then(function() {
+                            battleSocket.to(socket.gameId).emit('fire-shot', shotData);
+                        }, function(err) {
+                            console.warn('Problem saving board: ', err);
+                        });
+                    //}
+                });
+
+
                 // TODO handle a player firing a shot
-                battleSocket.to(socket.gameId).emit('fire-shot', shot);
+                //battleSocket.to(socket.gameId).emit('fire-shot', shot);
+
+                //// TODO
+                //if ($scope.enemyBoardSchema[cellCoords].ship == "none") {
+                //    //Do miss
+                //    $scope.enemyBoardSchema[cellCoords].type = "miss";
+                //    document.getElementById(id).style.background = "grey";
+                //}
+                //else {
+                //    //Do hit
+                //    $scope.enemyBoardSchema[cellCoords].type = "hit";
+                //    document.getElementById(id).style.background = "red";
+                //}
+                //$scope.endTurn();
+                //
+                //shotData.hit) {
+                //// Do hit
+                //$scope.enemyBoardSchema[shotData.coords
+
             }
         });
         socket.on('setup-ready', function(shipLocations) {
