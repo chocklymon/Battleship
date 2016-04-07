@@ -1,7 +1,7 @@
 battleship.controller("battleController", function($scope, $routeParams, io) {
 	// Get the unique game ID
-	var gameId = $routeParams.gameId;
-    var localPlayerID;
+	var gameId = $routeParams.gameId,
+		player = null;
 
 	// Get the socket and then join the game
 	var socket = io('/battle');
@@ -13,15 +13,13 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		console.log('Disconnected', arguments);
 	});
 	socket.on('user-info', function(userInfo) {
- 		console.log(userInfo);
- 		console.log(userInfo.username);
- 		$scope.localPlayer = userInfo.username;
-        localPlayerID = userInfo.id;
+ 		//console.log(userInfo);
+ 		player = userInfo;
  	});
 	socket.on('join', function(gameData) {
 		// Server has acknowledged that we joined the game, update the game data with the current data from the server
 		// TODO
-		console.log(gameData);
+		console.log("Join Data: ", gameData);
 		if (gameData.game) {
 			$scope.players = [{
 				name: gameData.game.player1,
@@ -37,12 +35,13 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	});
 	socket.on('rejoin', function() {
 		// Rejoin the game, this typically only happens if the server was restarted
-		socket.emit('join', gameId)
+		socket.emit('join', gameId);
+		socket.emit('user-info');
 	});
 	socket.on('fire-shot', function(shotData) {
 		console.log(shotData);
         var board;
-        if (shotData.player == localPlayerID){
+        if (shotData.player == player.id){
             board = $scope.enemyBoardSchema;
         }
         else{
@@ -243,11 +242,10 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
  		if ($scope.players.length != 2) {
  			return false;
  		}
- 		var currentPlayer;
- 		if ($scope.players[0].name == $scope.localPlayer && $scope.gameStatus == "PlayerOneTurn") {
+ 		if ($scope.players[0].name == player.username && $scope.gameStatus == "PlayerOneTurn") {
  			return true;
  		}
- 		else if ($scope.players[1].name == $scope.localPlayer && $scope.gameStatus == "PlayerTwoTurn") {
+ 		else if ($scope.players[1].name == player.username && $scope.gameStatus == "PlayerTwoTurn") {
  			return true;
  		}
  		else {
