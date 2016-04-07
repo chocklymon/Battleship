@@ -48,6 +48,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	});
 	socket.on('setup-ready', function(setupState) {
 		console.log(setupState);
+        $scope.gameStatus = setupState.gameStatus;
 	});
 
 	$scope.test = "color: red";
