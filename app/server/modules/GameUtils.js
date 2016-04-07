@@ -114,8 +114,24 @@ function getGamesFor(userId) {
     );
 }
 
+var getGameData = function(gameId) {
+    return Board.find({
+        game_id: gameId
+    }).exec().then(function(boards) {
+        //console.log(boards);
+        if (boards.length != 2) {
+            // Missing boards
+            throw 'Missing boards';
+        }
+        return Game.findById(gameId).exec().then(function(game) {
+            return {board1: boards[0], board2: boards[1], game: game};
+        });
+    });
+};
+
 module.exports = {
     getGamesFor: getGamesFor,
+    getGameData: getGameData,
     userIdsToNames: function(objects, keys, simple) {
         if (simple) {
             return userIdsToNames([[objects]], keys)
