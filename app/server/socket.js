@@ -235,7 +235,7 @@ module.exports = function(server, sessionHandler) {
                 }
             ).finally(function() {
                 // Send what game data we have
-                socket.emit('join', gameData);
+                battleSocket.to(socket.gameId).emit('join', gameData);
             });
         });
         socket.on('disconnect', function() {
