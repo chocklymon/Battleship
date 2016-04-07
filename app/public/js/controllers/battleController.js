@@ -83,8 +83,16 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		}
 	}
 
+	$scope.isPlayersTurn = function() {
+		// TODO
+		return false;
+	}
+
 	$scope.enemyCellHover = function(e) {
 		// TODO
+		if(!$scope.isPlayersTurn()) {
+			return; // We only allow fire investigation if it is the players turn
+		}
 		var id = e.target.id;
 		var cellCoords = id.substr(1, 3);
 		if ($scope.enemyBoardSchema[cellCoords].type == "none") {
