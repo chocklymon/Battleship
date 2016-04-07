@@ -2,9 +2,11 @@ var mongoose = require('mongoose');
 var GameSchema = new mongoose.Schema({
     name: String,
     player1: String,
+    player1_ready: {type: Boolean, default: false},
     player1_ships: String,
     player1_board: String,
     player2: String,
+    player2_ready: {type: Boolean, default: false},
     player2_ships: String,
     player2_board: String,
     history: [String],
