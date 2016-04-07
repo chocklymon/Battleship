@@ -252,14 +252,17 @@ module.exports = function(server, sessionHandler) {
                         emitError(socket, 'Unable to fire shots in a completed game', errorTypes.NOTICE);
                     } else {
                         var enemyBoard, playerBoard;
-                        if (gameData.game.status == 'PlayerOneTurn') {
+                        if (gameData.game.status == 'PlayerOneTurn' && gameData.game.player1 == user._id) {
                             enemyBoard = gameData.board2;
                             playerBoard = gameData.board1;
                             gameData.game.status = 'PlayerTwoTurn';
-                        } else {
+                        } else if (gameData.game.player2 == user._id) {
                             enemyBoard = gameData.board1;
                             playerBoard = gameData.board2;
                             gameData.game.status = 'PlayerOneTurn';
+                        } else {
+                            emitError(socket, 'Not your turn', errorTypes.NOTICE);
+                            return;
                         }
 
                         if (enemyBoard[shot].isOccupied) {

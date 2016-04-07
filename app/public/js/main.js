@@ -73,6 +73,10 @@ battleship.factory('io', ['$rootScope', '$location', function($rootScope, $locat
     var factory = function(namespace) {
         socket = io(namespace);
         socketWrapper.on('app-error', errorHandler);
+        //socketWrapper.on('disconnect', function() {
+        //    console.log('Disconnected from server: ', arguments);
+        //    errorHandler({msg: 'Disconnected from server', type: 'warning'});
+        //});
         return socketWrapper;
     };
     factory.getSocket = function() {
