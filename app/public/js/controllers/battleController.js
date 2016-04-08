@@ -127,19 +127,14 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	};
 	
 	$scope.isCellHit = function(board, cell) {
-		//console.log(board);
-		//console.log(cell);
 		if(board != "enemy" && board != "own") {
 			return false;
 		}
 		if(board == "enemy" && $scope.enemyBoardSchema[cell].type == "hit" || $scope.enemyBoardSchema[cell].type == "miss") {
-			//console.log("HERE1");
 			return true;
 		} else if(board == "own" && $scope.playerBoardSchema[cell].type == "hit" || $scope.enemyBoardSchema[cell].type == "miss") {
-			//console.log("HERE2");
 			return true;
 		}
-		//console.log("HERE3");
 		return false;
 	};
 
@@ -157,15 +152,16 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			}
 		} else if(board == "own" && $scope.enemyBoardSchema[cell]) {
 			if($scope.playerBoardSchema[cell].type == "hit") {
-				//console.log("HERE2");
 				document.getElementById(cell).removeAttribute('style');
 				return "backRed";
+			} else if($scope.playerBoardSchema[cell].isOccupied == true) {
+				document.getElementById(cell).removeAttribute('style');
+				return "backGray";
 			} else {
 				document.getElementById(cell).removeAttribute('style');
 				return;
 			}
 		}
-		//console.log("HERE3");
 		return;
 	};
 
