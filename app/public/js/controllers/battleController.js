@@ -92,15 +92,24 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			var id = e.target.id, i;
 			var cellCoords = id.substr(1, 2);
 			cellCoords = parseInt(cellCoords);
-			//console.log("_____" + cellCoords);
+			console.log("_____" + cellCoords);
 			$scope.populateArray(cellCoords);
-			//console.log("_____" + cellCoords);
+			console.log($scope.selectedCells);
+
 			if ($scope.canPlaceShip(cellCoords)) {
+				console.log("can place the ship!");
 				for(i = 0; i < $scope.selectedCells.length; i++) {
 					id = $scope.stringifyCoords($scope.selectedCells[i]);
+					console.log("Coloring " + id + " Green");
+					console.log(document.getElementById(id).style.backgroundColor);
+					console.log(document.getElementById(id).style);
+					//document.getElementById(id).style.backgroundColor = "green";
 					document.getElementById(id).style.background = "green";
+					console.log(document.getElementById(id).style.background);
+					console.log(document.getElementById(id).style);
 				}
 			} else {
+				console.log("Cannot place the ship!");
 				for(i = 0; i < $scope.selectedCells.length; i++) {
 					id = $scope.stringifyCoords($scope.selectedCells[i]);
 					if($scope.currentShipOrientation == "Left" && ($scope.selectedCells[i] % 10) - ($scope.selectedCells[0] % 10) <= 0 && $scope.selectedCells[i] >= 0) {
@@ -117,6 +126,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 					}
 				}
 			}
+			console.log("_____" + cellCoords);
 
 			//if (e.target.id == "C00") {
 			//console.log("Don't type anything stupid");
@@ -185,6 +195,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	};
 
 	$scope.populateArray = function(cellCoords) {
+		console.log("Came to populate Array function");
 		$scope.selectedCells = [];
 		$scope.selectedCells.push(cellCoords);
 		for (var i = 1; i < $scope.currentShipLength; i++) {
@@ -287,12 +298,12 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	$scope.enemyCellLeave = function(e) {
 		// TODO
 		var id = e.target.id;
-        if (id) {
-            var cellCoords = id.substr(1, 3);
-            if ($scope.enemyBoardSchema[cellCoords].type == "none") {
-                document.getElementById(id).removeAttribute('style');
-            }
-        }
+        	if (id) {
+        	    var cellCoords = id.substr(1, 3);
+        	    if ($scope.enemyBoardSchema[cellCoords].type == "none") {
+        	        document.getElementById(id).removeAttribute('style');
+        	    }
+        	}
 	};
 
 	$scope.selectShip = function(shipName) {
