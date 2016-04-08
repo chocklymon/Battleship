@@ -18,7 +18,6 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
  	});
 	socket.on('join', function(gameData) {
 		// Server has acknowledged that we joined the game, update the game data with the current data from the server
-		// TODO
 		console.log("Join Data: ", gameData);
 		if (gameData.game) {
 			$scope.gameSchema = gameData.game;
@@ -33,7 +32,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 				});
 			}
 		}
-		if (gameData.boards) {
+		if (gameData.boards && gameData.boards.length == 2) {
 			if (gameData.boards[0].player_id == player.id) {
 				$scope.enemyBoardSchema = gameData.boards[0];
 				$scope.playerBoardSchema = gameData.boards[1];
@@ -74,12 +73,11 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		$scope.endTurn();
 	});
 	socket.on('setup-ready', function(setupState) {
-		console.log(setupState);
-        $scope.gameStatus = setupState.gameStatus;
+		//console.log(setupState);
+        $scope.gameSchema.status = setupState.gameStatus;
 	});
 
 	$scope.test = "color: red";
-	$scope.gameStatus = "Setup";
 	$scope.currentSelectedShip = "none";
 	$scope.currentShipOrientation = "none";
 	$scope.currentShipLength = 0;
@@ -88,7 +86,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	$scope.players = [];
 
 	$scope.cellHover = function(e) {
-		if ($scope.gameStatus == "Setup" && $scope.currentSelectedShip != "none") {
+		if ($scope.gameSchema.status == "Setup" && $scope.currentSelectedShip != "none") {
 			$scope.test = "color: blue";
 			//console.dir(e);
 			var id = e.target.id, i;
@@ -257,10 +255,10 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
  		if ($scope.players.length != 2) {
  			return false;
  		}
- 		if ($scope.players[0].name == player.username && $scope.gameStatus == "PlayerOneTurn") {
+ 		if ($scope.players[0].name == player.username && $scope.gameSchema.status == "PlayerOneTurn") {
  			return true;
  		}
- 		else if ($scope.players[1].name == player.username && $scope.gameStatus == "PlayerTwoTurn") {
+ 		else if ($scope.players[1].name == player.username && $scope.gameSchema.status == "PlayerTwoTurn") {
  			return true;
  		}
  		else {
@@ -276,7 +274,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	};
 
 	$scope.cellLeave = function(e) {
-		if ($scope.gameStatus == "Setup" && $scope.currentSelectedShip != "none") {
+		if ($scope.gameSchema.status == "Setup" && $scope.currentSelectedShip != "none") {
 
 			for(var i = 0; i < $scope.selectedCells.length; i++) {
 				var id = $scope.stringifyCoords($scope.selectedCells[i]);
@@ -303,7 +301,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 
 	$scope.selectShip = function(shipName) {
 		// Don't do anything if it isn't the setup phase
-		if ($scope.gameStatus != "Setup") {
+		if ($scope.gameSchema.status != "Setup") {
 			alert("We are no longer in the Setup Phase");
 			return;
 		}
@@ -386,37 +384,37 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	};
 
 	$scope.changeStateDebug = function() {
-		switch($scope.gameStatus) {
+		switch($scope.gameSchema.status) {
 			case "Setup" : 
-				$scope.gameStatus = "PlayerOneTurn";
+				$scope.gameSchema.status = "PlayerOneTurn";
 				break;
 			case "PlayerOneTurn" :
-				$scope.gameStatus = "PlayerTwoTurn";
+				$scope.gameSchema.status = "PlayerTwoTurn";
 				break;
 			case "PlayerTwoTurn" :
-				$scope.gameStatus = "EndGame";
+				$scope.gameSchema.status = "EndGame";
 				break;
 			case "EndGame" :
-				$scope.gameStatus = "Setup";
+				$scope.gameSchema.status = "Setup";
 				break;
 		}
 	};
 
 	$scope.endTurn = function() {
-		if ($scope.gameStatus == "PlayerOneTurn") {
-			$scope.gameStatus = "PlayerTwoTurn";
+		if ($scope.gameSchema.status == "PlayerOneTurn") {
+			$scope.gameSchema.status = "PlayerTwoTurn";
 		}
-		else if ($scope.gameStatus == "PlayerTwoTurn") {
-			$scope.gameStatus = "PlayerOneTurn";
+		else if ($scope.gameSchema.status == "PlayerTwoTurn") {
+			$scope.gameSchema.status = "PlayerOneTurn";
 		}
 	};
 
 	$scope.fireOnCell = function(e) {
-		if ($scope.gameStatus == "Setup") {
+		if ($scope.gameSchema.status == "Setup") {
 			alert("You cannot fire during setup!");
 			return;
 		}
-		if ($scope.gameStatus == "EndGame") {
+		if ($scope.gameSchema.status == "EndGame") {
 			alert("You cannot fire, the game is over!");
 			return;
 		}
@@ -440,7 +438,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	};
 
 	$scope.placeShip = function(e) {
-		if ($scope.gameStatus == "Setup" && $scope.canPlaceShip()) {
+		if ($scope.gameSchema.status == "Setup" && $scope.canPlaceShip()) {
 			switch($scope.currentSelectedShip) {
 				case "Carrier" :
 					$scope.playerShipSchema.carrier_orientation = $scope.currentShipOrientation;
@@ -622,6 +620,6 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	    player2_ships: String,
 	    player2_board: String,
 	    history: [String],
-	    status: String
+	    status: "Setup"
 	}
 });

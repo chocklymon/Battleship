@@ -162,7 +162,7 @@ module.exports = function(server, sessionHandler) {
                             }
                         });
                     } else if (game.player2 == user._id) {
-                        // Player is the scond player
+                        // Player is the second player
                         socket.emit('game-join', gameId);
                     } else {
                         // Attempting to join a game that the player isn't part of
@@ -207,6 +207,9 @@ module.exports = function(server, sessionHandler) {
                     socket.join(gameId);
                     socket.gameId = gameId;
 
+                    if (game.status == 'setup') {
+                        game.status = 'Setup';
+                    }
                     gameData.game = game;
 
                     return Utils.userIdsToNames(gameData.game, ['player1', 'player2'], true);
@@ -224,6 +227,7 @@ module.exports = function(server, sessionHandler) {
                 game_id: socket.gameId,
                 player_id: user._id
             }).exec().then(function(ship) {
+                //console.log(ship);
                 gameData.shipSchema = ship;
             });
 
