@@ -304,6 +304,7 @@ module.exports = function(server, sessionHandler) {
                 // Save the board and ships
                 var ships = new Ship(setupInfo.shipSchema);
                 ships.player_id = user._id;
+                ships.game_id = socket.gameId;
                 var shipsPromise = ships.save();
 
                 var board = new Board(setupInfo.boardSchema);

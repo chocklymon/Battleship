@@ -23,12 +23,12 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			$scope.gameSchema = gameData.game;
 			$scope.players = [{
 				name: gameData.game.player1,
-				status: 'Unknown'
+				status: ''
 			}];
 			if (gameData.game.player2) {
 				$scope.players.push({
 					name: gameData.game.player2,
-					status: 'Unknown'
+					status: ''
 				});
 			}
 		}
