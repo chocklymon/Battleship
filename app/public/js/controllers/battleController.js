@@ -103,7 +103,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 					console.log("Coloring " + id + " Green");
 					console.log(document.getElementById(id).style.backgroundColor);
 					console.log(document.getElementById(id).style);
-					//document.getElementById(id).style.backgroundColor = "green";
+					document.getElementById(id).style.backgroundColor = "green";
 					document.getElementById(id).style.background = "green";
 					console.log(document.getElementById(id).style.background);
 					console.log(document.getElementById(id).style);
