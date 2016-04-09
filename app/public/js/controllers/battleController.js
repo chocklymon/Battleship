@@ -84,11 +84,13 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 	$scope.selectedCells = [];
 	$scope.myPlayer = "1";
 	$scope.players = [];
+	$scope.ownHoverColor = "";
+	$scope.enemyHoverColor = "";
+	$scope.currentEnemyCell = -1;
 
 	$scope.cellHover = function(e) {
 		if ($scope.gameSchema.status == "Setup" && $scope.currentSelectedShip != "none") {
 			$scope.test = "color: blue";
-			//console.dir(e);
 			var id = e.target.id, i;
 			var cellCoords = id.substr(1, 2);
 			cellCoords = parseInt(cellCoords);
@@ -100,39 +102,31 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 				console.log("can place the ship!");
 				for(i = 0; i < $scope.selectedCells.length; i++) {
 					id = $scope.stringifyCoords($scope.selectedCells[i]);
-					console.log("Coloring " + id + " Green");
-					console.log(document.getElementById(id).style.backgroundColor);
-					console.log(document.getElementById(id).style);
-					document.getElementById(id).style.backgroundColor = "green";
-					document.getElementById(id).style.background = "green";
-					console.log(document.getElementById(id).style.background);
-					console.log(document.getElementById(id).style);
+					$scope.ownHoverColor = "green";
 				}
 			} else {
 				console.log("Cannot place the ship!");
 				for(i = 0; i < $scope.selectedCells.length; i++) {
 					id = $scope.stringifyCoords($scope.selectedCells[i]);
 					if($scope.currentShipOrientation == "Left" && ($scope.selectedCells[i] % 10) - ($scope.selectedCells[0] % 10) <= 0 && $scope.selectedCells[i] >= 0) {
-						document.getElementById(id).style.background = "red";
+						//document.getElementById(id).style.background = "red";
+						$scope.ownHoverColor = "red";
 					}
 					if($scope.currentShipOrientation == "Right" && ($scope.selectedCells[i] % 10) - ($scope.selectedCells[0] % 10) >= 0 && $scope.selectedCells[i] < 100) {
-						document.getElementById(id).style.background = "red";
+						//document.getElementById(id).style.background = "red";
+						$scope.ownHoverColor = "red";
 					}
 					if($scope.currentShipOrientation == "Down" && $scope.selectedCells[i] < 100) {
-						document.getElementById(id).style.background = "red";
+						//document.getElementById(id).style.background = "red";
+						$scope.ownHoverColor = "red";
 					}
 					if($scope.currentShipOrientation == "Up" && $scope.selectedCells[i] >= 0) {
-						document.getElementById(id).style.background = "red";
+						//document.getElementById(id).style.background = "red";
+						$scope.ownHoverColor = "red";
 					}
 				}
 			}
 			console.log("_____" + cellCoords);
-
-			//if (e.target.id == "C00") {
-			//console.log("Don't type anything stupid");
-			//console.log($scope.playerBoardSchema[e.target.id]);
-			//e.target.style.background = "green";
-			//}
 		}
 	};
 	
@@ -156,12 +150,29 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			if($scope.enemyBoardSchema[cell].type == "hit") {
 				document.getElementById('E' + cell).removeAttribute('style');
 				return "backRed";
+			} else if($scope.currentEnemyCell == parseInt(cell.substr(1,2)) && $scope.enemyHoverColor == "green") {
+				document.getElementById('E' + cell).removeAttribute('style');
+				return "backGreen";
 			} else {
 				document.getElementById('E' + cell).removeAttribute('style');
 				return;
 			}
 		} else if(board == "own" && $scope.enemyBoardSchema[cell]) {
-			if($scope.playerBoardSchema[cell].type == "hit") {
+			if($scope.selectedCells.indexOf(parseInt(cell.substr(1,2))) != -1) {
+				if(($scope.currentShipOrientation == "Left" && (parseInt(cell.substr(1,2)) % 10) - ($scope.selectedCells[0] % 10) <= 0) ||
+					($scope.currentShipOrientation == "Right" && (parseInt(cell.substr(1,2)) % 10) - ($scope.selectedCells[0] % 10) >= 0) ||
+					($scope.currentShipOrientation == "Down") ||
+					($scope.currentShipOrientation == "Up"))
+				{
+					if($scope.ownHoverColor == "red") {
+						console.log("RED");
+						return "backRed";
+					} else if($scope.ownHoverColor == "green") {
+						console.log("GREEN");
+						return "backGreen";
+					}
+				}
+			} else if($scope.playerBoardSchema[cell].type == "hit") {
 				document.getElementById(cell).removeAttribute('style');
 				return "backRed";
 			} else if($scope.playerBoardSchema[cell].isOccupied == true) {
@@ -186,12 +197,13 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			return; // We only allow fire investigation if it is the players turn
 		}
 		var id = e.target.id;
-        if (id) {
-            var cellCoords = id.substr(1, 3);
-            if ($scope.enemyBoardSchema[cellCoords].type == "none" && $scope.isCurrentPlayersTurn()) {
-                document.getElementById(id).style.background = "green";
-            }
-        }
+       		if (id) {
+       	    		var cellCoords = id.substr(1, 3);
+            		if ($scope.enemyBoardSchema[cellCoords].type == "none" && $scope.isCurrentPlayersTurn()) {
+            		    //document.getElementById(id).style.background = "green";
+            			$scope.enemyHoverColor = "green";
+			}
+        	}
 	};
 
 	$scope.populateArray = function(cellCoords) {
@@ -286,13 +298,14 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 			for(var i = 0; i < $scope.selectedCells.length; i++) {
 				var id = $scope.stringifyCoords($scope.selectedCells[i]);
 				if ($scope.playerBoardSchema[id] && $scope.playerBoardSchema[id].isOccupied) {
-	 				document.getElementById(id).style.background = "grey";
+	 				//document.getElementById(id).style.background = "grey";
 	 			}
 				else if ($scope.playerBoardSchema[id]) {
-					document.getElementById(id).style.background = "white";
+					//document.getElementById(id).style.background = "white";
 				}
 			}
 		}		
+		
 	};
 
 	$scope.enemyCellLeave = function(e) {
