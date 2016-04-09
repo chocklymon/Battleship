@@ -261,14 +261,25 @@ module.exports = function(server, sessionHandler) {
                         emitError(socket, 'Unable to fire shots in a completed game', errorTypes.NOTICE);
                     } else {
                         var enemyBoard, playerBoard;
-                        if (gameData.game.status == 'PlayerOneTurn' && gameData.game.player1 == user._id) {
-                            enemyBoard = gameData.board2;
-                            playerBoard = gameData.board1;
-                            gameData.game.status = 'PlayerTwoTurn';
-                        } else if (gameData.game.player2 == user._id) {
-                            enemyBoard = gameData.board1;
-                            playerBoard = gameData.board2;
-                            gameData.game.status = 'PlayerOneTurn';
+                        // Validate that the player is allowed to take a shot
+                        if ((gameData.game.status == 'PlayerOneTurn' && gameData.game.player1 == user._id)
+                            || (gameData.game.status == 'PlayerTwoTurn' && gameData.game.player2 == user._id)) {
+                            // Get the correct board for the player that is firing the shot
+                            if (gameData.board1.player_id == user._id) {
+                                //console.log("Player One Shot");
+                                enemyBoard = gameData.board2;
+                                playerBoard = gameData.board1;
+                            } else {
+                                //console.log("Player Two Shot");
+                                enemyBoard = gameData.board1;
+                                playerBoard = gameData.board2;
+                            }
+                            // Change the player turn status
+                            if (gameData.game.status == 'PlayerOneTurn') {
+                                gameData.game.status = 'PlayerTwoTurn';
+                            } else {
+                                gameData.game.status = 'PlayerOneTurn';
+                            }
                         } else {
                             emitError(socket, 'Not your turn', errorTypes.NOTICE);
                             return;

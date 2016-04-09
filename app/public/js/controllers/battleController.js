@@ -51,23 +51,21 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		socket.emit('user-info');
 	});
 	socket.on('fire-shot', function(shotData) {
-		console.log(shotData);
+		//console.log(shotData);
         var board;
         if (shotData.player == player.id){
-            board = $scope.enemyBoardSchema;
+			board = $scope.enemyBoardSchema;
         }
         else{
-            board = $scope.playerBoardSchema;
+			board = $scope.playerBoardSchema;
         }
         
 		if (shotData.hit) {
 			// Do hit
 			board[shotData.coords].type = "hit";
-			//document.getElementById('E' + shotData.coords).style.background = "red";
 		} else {
 			// Do miss
 			board[shotData.coords].type = "miss";
-			//document.getElementById('E' + shotData.coords).style.background = "grey";
 		}
 
 		$scope.endTurn();
@@ -134,9 +132,9 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 		if(board != "enemy" && board != "own") {
 			return false;
 		}
-		if(board == "enemy" && $scope.enemyBoardSchema[cell].type == "hit" || $scope.enemyBoardSchema[cell].type == "miss") {
+		if(board == "enemy" && ($scope.enemyBoardSchema[cell].type == "hit" || $scope.enemyBoardSchema[cell].type == "miss")) {
 			return true;
-		} else if(board == "own" && $scope.playerBoardSchema[cell].type == "hit" || $scope.enemyBoardSchema[cell].type == "miss") {
+		} else if(board == "own" && ($scope.playerBoardSchema[cell].type == "hit" || $scope.playerBoardSchema[cell].type == "miss")) {
 			return true;
 		}
 		return false;
