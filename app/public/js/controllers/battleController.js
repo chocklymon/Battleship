@@ -200,7 +200,7 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 				document.getElementById('E' + cell).removeAttribute('style');
 				return;
 			}
-		} else if(board == "own" && $scope.enemyBoardSchema[cell]) {
+		} else if(board == "own" && $scope.playerBoardSchema[cell]) {
 			if($scope.selectedCells.indexOf(parseInt(cell.substr(1,2))) != -1) {
 				if(($scope.currentShipOrientation == "Left" && (parseInt(cell.substr(1,2)) % 10) - ($scope.selectedCells[0] % 10) <= 0) ||
 					($scope.currentShipOrientation == "Right" && (parseInt(cell.substr(1,2)) % 10) - ($scope.selectedCells[0] % 10) >= 0) ||
