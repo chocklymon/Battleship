@@ -1,4 +1,4 @@
-<div id="battleship-game-wrap" class="container">
+<div class="game-wrap container">
 	<div class="row">
 		<div class="col-sm-3 col-lg-4">
 			<h2>BattleShips!</h2>
@@ -7,23 +7,31 @@
 
 				<!--</div>-->
 				<div id="player-ships">
-					<button ng-click="selectShip('Carrier')" type="button" ng-disabled="playerShipSchema.carrier_location != 'none'">
+					<button class="btn btn-default" type="button"
+							ng-click="selectShip('Carrier')" ng-disabled="playerShipSchema.carrier_location != 'none' || gameSchema.status != 'Setup'">
 						Carrier
 					</button>
-					<button ng-click="selectShip('Battleship')" type="button" ng-disabled="playerShipSchema.battleship_location != 'none'">
+					<button class="btn btn-default" type="button"
+							ng-click="selectShip('Battleship')" ng-disabled="playerShipSchema.battleship_location != 'none' || gameSchema.status != 'Setup'">
 						Battleship
 					</button>
-					<button ng-click="selectShip('Cruiser')" type="button" ng-disabled="playerShipSchema.cruiser_location != 'none'">
+					<button class="btn btn-default" type="button"
+							ng-click="selectShip('Cruiser')" ng-disabled="playerShipSchema.cruiser_location != 'none' || gameSchema.status != 'Setup'">
 						Cruiser
 					</button>
-					<button ng-click="selectShip('Destroyer')" type="button" ng-disabled="playerShipSchema.destroyer_location != 'none'">
+					<button class="btn btn-default" type="button"
+							ng-click="selectShip('Destroyer')" ng-disabled="playerShipSchema.destroyer_location != 'none' || gameSchema.status != 'Setup'">
 						Destroyer
 					</button>
-					<button ng-click="selectShip('Submarine')" type="button" ng-disabled="playerShipSchema.submarine_location != 'none'">
+					<button class="btn btn-default" type="button"
+							ng-click="selectShip('Submarine')" ng-disabled="playerShipSchema.submarine_location != 'none' || gameSchema.status != 'Setup'">
 						Submarine
 					</button>
 					<hr>
-					<button ng-click="changeOrientation()" type="button">Change Orientation</button>
+					<button class="btn btn-default" type="button"
+							ng-click="changeOrientation()" ng-disabled="gameSchema.status != 'Setup'">
+						Change Orientation
+					</button>
 					<!--<button ng-click="changeStateDebug()" type="button">Change Game State</button>-->
 					<hr>
 					<p>Current Selected Ship: {{ currentSelectedShip }}</p>
@@ -328,22 +336,38 @@
 			</div>
 		</div>
 		<div id="right-column" class="col-sm-3 col-lg-4">
-			<div id="history-chat">
-				<!--Here is where the chat goes!-->
-			</div>
 			<p>Current Game Status: {{ gameSchema.status }}</p>
 			<div id="player-status">
 				<h5>Players</h5>
 				<div class="row" ng-repeat="player in players">
-					<div class="col-xs-4" ng-switch="player.status">
+					<div class="col-xs-6">
+						{{player.name}}
+					</div>
+					<div class="col-xs-2 text-center" ng-switch="player.status">
 						<span ng-switch-when="Waiting" class="glyphicon glyphicon-hourglass"></span>
 						<span ng-switch-when="Offline" class="glyphicon glyphicon-ban-circle"></span>
 						<span ng-switch-default="">&bull;</span>
+					</div>
+					<div class="col-xs-4">
 						{{player.status}}
 					</div>
-					<div class="col-xs-8">
-						{{player.name}}
-					</div>
+				</div>
+			</div>
+			<div class="row chat-panel">
+				<div class="chat-inner-panel">
+					<ul class="chat-messages list-unstyled">
+						<li ng-repeat="chat in chats">
+							<strong>{{chat.user}}:</strong> {{chat.msg}}
+						</li>
+					</ul>
+					<form class="chat-input" ng-submit="sendChatMessage()">
+						<div class="input-group">
+							<input type="text" ng-model="chatMessage" class="form-control" placeholder="Type a message..." />
+							<span class="input-group-btn">
+								<button type="submit" class="btn btn-default">Send</button>
+							</span>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

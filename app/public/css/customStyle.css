@@ -1,4 +1,4 @@
-.gameHubWrap, #battleship-game-wrap {
+.game-wrap {
 	background-color: white;
 	margin-top: 30px;
 	margin-bottom: 5px;
@@ -71,4 +71,19 @@ td span {
 #enemy-ships, #player-ships {
     height: 275px;
     padding: 10px 0px;
+}
+
+.chat-panel {
+	position: relative;
+	height: 457px;
+}
+
+.chat-inner-panel {
+	position: absolute;
+	bottom: 0;
+}
+
+.chat-messages {
+	overflow: auto;
+	max-height: 400px;
 }

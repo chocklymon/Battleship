@@ -189,7 +189,7 @@ module.exports = function(server, sessionHandler) {
     battleSocket.on('connection', function(socket) {
         // Save the user information for easy access
         var user = socket.request.session.user;
-	sendUserInfo(socket);
+	    sendUserInfo(socket);
 
         // Send the users information when requested
         socket.on('user-info', function() {
@@ -224,7 +224,7 @@ module.exports = function(server, sessionHandler) {
                 gameData.boards = boards;
             });
             var shipFoundPromise = Ship.findOne({
-                game_id: socket.gameId,
+                game_id: gameId,
                 player_id: user._id
             }).exec().then(function(ship) {
                 //console.log(ship);
@@ -245,6 +245,9 @@ module.exports = function(server, sessionHandler) {
         socket.on('disconnect', function() {
             // TODO user left game code
             console.log('User left game: ', socket.gameId);
+            if (socket.gameId) {
+                battleSocket.to(socket.gameId).emit('player-left-game', user.user);
+            }
         });
 
         // Room (game) specific events
@@ -314,8 +317,8 @@ module.exports = function(server, sessionHandler) {
 
                 // Save the board and ships
                 var ships = new Ship(setupInfo.shipSchema);
-                ships.player_id = user._id;
                 ships.game_id = socket.gameId;
+                ships.player_id = user._id;
                 var shipsPromise = ships.save();
 
                 var board = new Board(setupInfo.boardSchema);
