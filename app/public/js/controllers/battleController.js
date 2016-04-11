@@ -498,11 +498,13 @@ battleship.controller("battleController", function($scope, $routeParams, io) {
 				//console.log($scope.playerBoardSchema[$scope.stringifyCoords($scope.selectedCells[i])].isOccupied);
 				$scope.playerBoardSchema[$scope.stringifyCoords($scope.selectedCells[i])].ship = $scope.currentSelectedShip;
 				//console.log($scope.playerBoardSchema[$scope.stringifyCoords($scope.selectedCells[i])].ship);	
-				document.getElementById($scope.stringifyCoords($scope.selectedCells[i])).style.background = "grey";
+				//document.getElementById($scope.stringifyCoords($scope.selectedCells[i])).style.background = "grey";
 			}
 			$scope.currentSelectedShip = "none";
 			$scope.currentShipOrientation = "none";
-            
+			$scope.selectedCells = [];
+			$scope.ownHoverColor = "";            
+
             if ($scope.playerShipSchema.carrier_location != "none" && $scope.playerShipSchema.battleship_location != "none" && $scope.playerShipSchema.cruiser_location != "none" && $scope.playerShipSchema.submarine_location != "none" && $scope.playerShipSchema.destroyer_location != "none"){
                 var ships = {shipSchema: $scope.playerShipSchema, boardSchema: $scope.playerBoardSchema};  
                 socket.emit('setup-ready', ships);
